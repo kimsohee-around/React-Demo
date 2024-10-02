@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {users} from "../../static.json"
-
+//     -> 서버에서 가져온 것이 아닌 자바스크립트 json 데이터입니다.
 
 function UserList (){
     // const [users, setUsers] = useState(null)
