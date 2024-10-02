@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
-import PageSpinner from "./PageSpinner.jsx";
+import PageSpinner from "../UI/PageSpinner.jsx";
+import Modal from "../UI/Modal.jsx";
 
 function UserList (){
     const [users, setUsers] = useState(null)
@@ -31,12 +32,14 @@ function UserList (){
         return <div>오류 : {error}</div>
     }
 
-    if(loading) {   //스피너 컴포넌트 사용할 수 있습니다.
+/*    if(loading) {   //스피너 컴포넌트 사용할 수 있습니다.
         // return <div>Loading.......</div>
         return (
                 <PageSpinner/>
         )
-    }
+    }*/
+
+
 
     return(
         <>
@@ -60,6 +63,10 @@ function UserList (){
                     <p>{user.notes}</p>
                 </div>
             </div>)}
+
+            <Modal isOpen={loading}>
+                <PageSpinner />
+            </Modal>
         </>
     )
 }
