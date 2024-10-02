@@ -1,4 +1,5 @@
-function getWeek(forDate, daysOffset=0){
+export default function getWeek(forDate, daysOffset=0){
+    // 다음 주, 이전 주 offset 으로 날짜 변경
     forDate = addDays(forDate,daysOffset)
     //start, end 를 계산하기 위해 요일이 필요합니다.
     // '화'요일은 2를 리턴. 지금 날짜 해당 주의 start는 -2, end 는 6-2
@@ -19,7 +20,7 @@ function addDays(forDate, offset){
 
 /* 위 함수 테스트 입니다.*/
 let result = getWeek(new Date())
-console.log("result:",result)
+console.log("오늘 result:",result)
 
 result = getWeek(new Date(),7)
 console.log("일주일 후 result:",result)
