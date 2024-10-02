@@ -17,7 +17,7 @@ function addDays(forDate, offset){
     return date;
 }
 
-
+/* 위 함수 테스트 입니다.*/
 let result = getWeek(new Date())
 console.log("result:",result)
 
