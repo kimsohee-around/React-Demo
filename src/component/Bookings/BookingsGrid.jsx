@@ -2,41 +2,13 @@ import {useState, useMemo, useEffect} from "react";
 import {getGrid, transformBookings} from "./grid-builder.js";
 import {formatDateDay} from '../utils/date-utils.js'
 import Spinner from "../UI/Spinner.jsx";
+import {getBookings} from "../utils/api.js";
+
 export default function BookingsGrid ({week, bookable, booking, setBooking}){
+
     const [bookings, setBookings] = useState(null)
-
-    //booings는 api 에서 받아옵니다.
-    /*
-    bookable.id는 3, week.start는 2024-09-22, week.end는 2024-09-28 3개의 값을 조건으로
-    예약 현황을 조회하여 수신된 bookins 배열이 아래와 같다면,
-    */
-
-    useEffect(() => {
-        //아직 fecth 통신을 하지는 않지만 useEffect에 넣지 않으면 다른 state 변수값의
-        //변화로 재렌더링이 일어날때마다 실행되어 재렌더링 횟수 초과로 오류가 발생한다.
-        const bookingsExam = [
-            {
-                "session": "Lunch",
-                "date": "2024-09-23",
-                "bookableId": 3,
-                "title": "Football Challenge",
-                "bookerId": 3,
-                "id": 2
-            },
-            {
-                "session": "Breakfast",
-                "date": "2024-09-26",
-                "bookableId": 3,
-                "title": "Tiddlywinks",
-                "bookerId": 2,
-                "id": 5
-            }
-        ]
-        /* 조건에 따라 조회된 bookingsExam 결과(test-of-transformBookings.js 참고)를 Grid 에 출력하기
-     위한 객체로 변환 */
-        setBookings(transformBookings(bookingsExam))
-    }, []);
-
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const {grid, sessions, dates}=  bookable ? getGrid(bookable, week.start) : {}
     /* grid 객체는 예약 가능 자원 요소들을 저장한 객체.
@@ -44,6 +16,35 @@ export default function BookingsGrid ({week, bookable, booking, setBooking}){
     * bookings 는 예약 정보가 저장된 객체. 해당 session과 date 에 예약 정보를 가져오기. 정보가 없다면
     * 위에서 getGrid 함수로 만들어진 grid 객체에서 가져오기. 차이점은 title 키 값 내용이 있느냐, 없는냐
     * */
+    useEffect(() => {
+        setLoading(true)
+        if (bookable) {
+            let doUpdate = true;
+
+            setBookings(null);
+            setError(false);
+            setBooking(null);
+
+            getBookings(bookable.id, week.start, week.end)
+                .then(resp => {
+                    if (doUpdate) {
+                        setBookings(transformBookings(resp));
+                    }
+                    setLoading(false)
+                    // console.log('g-2',bookings)
+                })
+                .catch(setError);
+
+            return () => doUpdate = false;
+        }
+    }, [week, bookable, setBooking]);
+    /*
+    비동기 작업(getBookings)이 완료되기 전에 컴포넌트가 언마운트될 경우, 더 이상 상태를 업데이트할 필요가 없습니다.
+    그럼에도 불구하고 상태 업데이트를 시도하면 메모리 누수 경고가 발생.
+    doUpdate 변수값으로 컴포넌트가 계속 마운트된 상태일 때만 상태 업데이트하도록 조건 설정.
+    정리 함수 doUpdate = false. -> 언마운트 할때 실행.
+    */
+
     function cell (session, date) {
         const cellData = bookings?.[session]?.[date]   /* 결과가 false 이면*/
             || grid[session][date];        /* or 연산 뒤의 수식을 수행하는 단축평가연산*/
@@ -64,7 +65,18 @@ export default function BookingsGrid ({week, bookable, booking, setBooking}){
         );
     }
 
+    if (loading) {
+        return <p><Spinner/> Loading...</p>
+    }
+
+
     return (
+      <>
+          {error && (
+              <p className="bookingsError">
+                  {`There was a problem loading the bookings data (${error})`}
+              </p>
+          )}
         <table className={bookings? "bookingsGrid active":"bookingsGrid"}
         >
             <thead>
@@ -91,8 +103,6 @@ export default function BookingsGrid ({week, bookable, booking, setBooking}){
             ))}
             </tbody>
         </table>
-
-
+      </>
     )
-
 }
