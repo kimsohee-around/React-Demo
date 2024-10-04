@@ -1,6 +1,3 @@
-import {useReducer} from "react";
-import reducer from "./weekReducer.js";
-import getWeek from "./date-util.js";
 import {FaCalendarDay, FaChevronLeft, FaChevronRight} from "react-icons/fa";
 import {formatDate} from "../utils/date-utils.js";
 

@@ -1,4 +1,4 @@
-import getWeek from "../utils/date-util.js";
+import getWeek from "../utils/date-utils.js";
 
 export default function reducer(state, action){
     switch (action.type){
