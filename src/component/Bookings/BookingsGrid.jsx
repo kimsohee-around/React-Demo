@@ -4,26 +4,8 @@ import {formatDateDay} from '../utils/date-utils.js'
 import Spinner from "../UI/Spinner.jsx";
 export default function BookingsGrid ({week, bookable, booking, setBooking}){
     // const [bookings, setBookings] = useState(null)
-    /*bookable = {
-        id: 3,
-        group: "Rooms",
-        title: "Games Room",
-        notes: "Table tennis, table football, pinball! There's also a selection of board games. Please tidy up!",
-        sessions: [
-            0,
-            2,
-            4
-        ],
-        days: [
-            0,
-            2,
-            3,
-            4,
-            5,
-            6
-        ]
-    }*/
 
+    //booings는 api 에서 받아옵니다.
     const bookings = [
         {
             "session": "Lunch",
