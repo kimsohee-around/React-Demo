@@ -13,4 +13,7 @@ export default function BookablesView () {
             <BookableDetails bookable={bookable}/>
         </>
     );
+    //bookable state 상태 변화는 자식 컴포넌트에서 발생하고
+    //   변경된 상태를 부모에게로 전달. - BookablesList 형제 컴포넌트 BookableDetails
+    //   BookableDetails 도 변경되 상태값으로 재렌더링
 }
