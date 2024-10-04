@@ -3,9 +3,10 @@ import {FaArrowRight} from "react-icons/fa";
 import Spinner from "../UI/Spinner.jsx";
 import loadData from "../utils/api.js";
 
+// bookables 는 전체 목록, bookable 은 목록 중에 선택한 하나의 객체를 컴포넌트 프롭으로 받음.
 //자식 컴포넌트에서 부모컴포넌트가 전달한 state 변수를 props 로 받음.
 export default function BookablesList ({bookable, setBookable}) {
-
+    //자식 BookablesList 컴포넌트가 관리하는 state 변수 선언
     //예약 가능 자원 데이터를 fetch 수신하는데 필요한 상태 변수
     const [bookables, setBookables] = useState([]);
     const [error, setError] = useState(false);

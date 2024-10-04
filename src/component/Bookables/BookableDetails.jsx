@@ -1,6 +1,8 @@
 import {useState} from "react";
 import {days, sessions} from "../../static.json";
 
+// (bookables 는 전체 목록) bookable 은  목록 중에 선택한 하나의 객체를 컴포넌트 프롭으로 받음.
+//자식 컴포넌트에서 부모컴포넌트가 전달한 state 변수를 props 로 받음.
 export default function BookableDetails ({bookable}) {
     const [hasDetails, setHasDetails] = useState(true);
 
@@ -8,6 +10,7 @@ export default function BookableDetails ({bookable}) {
         setHasDetails(has => !has);
     }
 
+    // bookable? :  끝까지 보시면 삼항연산입니다.
     return bookable ? (
         <div className="bookable-details item">
             <div className="item-header">
