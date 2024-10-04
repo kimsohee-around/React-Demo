@@ -32,17 +32,15 @@ export default function BookingsGrid ({week, bookable, booking, setBooking}){
                 "id": 5
             }
         ]
+        /* 조건에 따라 조회된 bookingsExam 결과(test-of-transformBookings.js 참고)를 Grid 에 출력하기
+     위한 객체로 변환 */
         setBookings(transformBookings(bookingsExam))
     }, []);
 
 
     const {grid, sessions, dates}=  bookable ? getGrid(bookable, week.start) : {}
-
-    /* 조건에 따라 조회된 bookingsExam 결과(test-of-transformBookings.js 참고)를 Grid 에 출력하기
-     위한 객체로 변환 */
-
-
     /* grid 객체는 예약 가능 자원 요소들을 저장한 객체.
+    *
     * bookings 는 예약 정보가 저장된 객체. 해당 session과 date 에 예약 정보를 가져오기. 정보가 없다면
     * 위에서 getGrid 함수로 만들어진 grid 객체에서 가져오기. 차이점은 title 키 값 내용이 있느냐, 없는냐
     * */
