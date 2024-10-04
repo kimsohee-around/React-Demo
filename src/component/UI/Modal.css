@@ -1,0 +1,21 @@
+/* Modal 스타일 (modal.css) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0); /* 모달 배경을 완전히 투명하게 설정 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    width: 100%;  /* 모달 컨텐츠가 화면의 100%를 차지하도록 설정 */
+    height: 100%; /* 모달 컨텐츠가 화면의 100%를 차지하도록 설정 */
+    background-color: transparent; /* 모달 내용의 배경을 완전히 투명하게 설정 */
+    display: flex; /* 스피너가 중앙에 위치하도록 flexbox 사용 */
+    justify-content: center; /* 수평 중앙 정렬 */
+    align-items: center; /* 수직 중앙 정렬 */
+}
