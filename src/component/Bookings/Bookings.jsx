@@ -1,5 +1,5 @@
 import {useReducer,useState} from "react";
-import {getWeek} from "../utils/date-utils.js";
+import getWeek from "../utils/date-utils.js";
 import weekReducer from './weekReducer.js'
 import WeekPicker from "./WeekPicker.jsx";
 import BookingDetails from "./BookingDetails.jsx";
