@@ -1,10 +1,9 @@
-import {FaSpinner} from "react-icons/fa";
+import Spinner from "./Spinner";
 
-
-export default function PageSpinner(){
+export default function PageSpinner () {
     return (
         <p className="page-loading">
-            <FaSpinner className="icon-loading"/>
+            <Spinner/>
         </p>
-    )
+    );
 }
