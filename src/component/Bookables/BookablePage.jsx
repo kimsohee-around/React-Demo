@@ -1,11 +1,9 @@
-import BookList from "./BookList.jsx";
+import BookablesView from "./BookablesView.jsx"
 
-function BookablePage(){
-    return(
+export default function BookablesPage () {
+    return (
         <main className="bookables-page">
-            <BookList/>
+            <BookablesView/>
         </main>
-    )
+    );
 }
-
-export default BookablePage
