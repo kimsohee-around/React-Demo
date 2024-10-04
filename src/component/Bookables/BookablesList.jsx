@@ -20,6 +20,8 @@ export default function BookablesList ({bookable, setBookable}) {
         loadData("http://localhost:3001/bookables")
             .then(bookables => {
                 setBookable(bookables[0]);
+      //fetch 결과 bookable 을 변경 -> 프롭으로 받은 상태변수로
+                //변경결과 부모 컴포넌트에게 상향
                 setBookables(bookables);
                 setIsLoading(false);
             })
@@ -58,15 +60,16 @@ export default function BookablesList ({bookable, setBookable}) {
             </select>
 
             <ul className="bookables items-list-nav">
+                {/* 기존 코드 (b,i) 인자를 받아서 i 인덱스 상태를 변경함*/}
                 {bookablesInGroup.map(b => (
                     <li
                         key={b.id}
                         className={b.id === bookable.id ? "selected" : null}
-                    >
+                    >  {/* 순서2) 재렌더링 css 변경. bookalble 은 새로운 상태값*/}
                         <button
                             className="btn"
                             onClick={() => setBookable(b)}
-                        >
+                        >  {/* 순서 1) bookable 상태를 변경  */}
                             {b.title}
                         </button>
                     </li>
