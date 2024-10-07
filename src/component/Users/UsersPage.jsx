@@ -9,7 +9,7 @@ function UsersPage () {
 
     return (
         <main className="users-page">
-            <UsersList user={user} setUser={setUser}/>
+            <UsersList user = {user} setUser={setUser} />
             <UserDetails user={user}/>
         </main>
     );

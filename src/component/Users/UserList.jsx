@@ -1,25 +1,25 @@
 import {useEffect, useState} from "react";
 import PageSpinner from "../UI/PageSpinner.jsx";
 
-function UserList (){
-    const [users, setUsers] = useState(null)
+function UserList ({user,setUser}){
+    const [users, setUsers] = useState(null)    //순서4) fetch 결과 상태값 저장
     // fetch 중 오류 또는 로딩 중에 상태값
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
     const [userIndex, setUserIndex] = useState(0)
-    const user = users?.[userIndex]  //자바의 Optional 역할 연산자 ?.
+    // const user = users?.[userIndex]  //자바의 Optional 역할 연산자 ?. //순서5) users 0번을 user에 저장합니다.
     //users 가 null 이 아닐 때만 실행합니다.
-
+    setUser(users?.[userIndex])
     //api 서비스 제공하는 서버로부터 데이터 가져오기
     useEffect(() => {
         setLoading(true)
-        fetch("http://localhost:3001/users")
+        fetch("http://localhost:3001/users")  // 순서1)
             .then( response =>{
                 return response.json()
             })
-            .then(data => {
+            .then(data => {                     // 순서2) users 배열이 data로 저장
                 console.log("data",data)
-                setUsers(data)
+                setUsers(data)                  // 순서3) 상태 users 변경
                 setLoading(false)
             })
             .catch((error) => setError(error.message))
@@ -37,6 +37,7 @@ function UserList (){
         )
     }
 
+  //순서 6) users, user 상태값으로 UI를 만듭니다.
     return(
         <>
             {users && (<ul className="users items-list-nav">
@@ -50,7 +51,8 @@ function UserList (){
                     </li>
                 ))}
             </ul>)}
-            {user && (<div className="item user">
+            {/* UserDetails 로 컴포넌트 분리합니다.*/}
+       {/*     {user && (<div className="item user">
                 <div className="item-header">
                     <h2>{user.name}</h2>
                 </div>
@@ -58,7 +60,7 @@ function UserList (){
                     <h3>{user.title}</h3>
                     <p>{user.notes}</p>
                 </div>
-            </div>)}
+            </div>)}*/}
         </>
     )
 }
