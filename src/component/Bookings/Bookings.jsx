@@ -23,10 +23,11 @@ export default function Bookings({bookable}){
                     bookable={bookable}
                     booking={booking}
                     setBooking={setBooking}/>
+            </div>
                 <BookingDetails
                     booking={booking}
                     bookable={bookable}/>
-            </div>
+
         </div>
     )
 }

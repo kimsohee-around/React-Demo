@@ -4,7 +4,7 @@
 
 // 선택한 bookable 데이터를 격자구조로 출력할 수 있는 오브젝트만들기
 import {addDays, formatDate} from "../utils/date-utils.js";
-import {sessions as sessionNames} from "../../static.json"
+import {sessions as sessionNames} from "../../static.json"   //test-of-.... .js 파일 실행할때에는 주석처리 필수.
 
 export function getGrid(bookable, startDate){
     // 선택한 날짜 해당 주의 날짜들 저장한 배열 생성
@@ -34,42 +34,31 @@ export function getGrid(bookable, startDate){
            }
 }
 
-// ====  테스트 ======
-/*
-const sessionNames= [
-    "Breakfast",
-    "Morning",
-    "Lunch",
-    "Afternoon",
-    "Evening"
-]
+export function transformBookings (bookingsArray) {
+    return bookingsArray.reduce((bookings, booking) => {
 
-const bookable = {
-    id: 3,
-    group: "Rooms",
-    title: "Games Room",
-    notes: "Table tennis, table football, pinball! There's also a selection of board games. Please tidy up!",
-    sessions: [
-        0,
-        2,
-        4
-    ],
-    days: [
-        0,
-        2,
-        3,
-        4,
-        5,
-        6
-    ]
+        const {session, date} = booking;
+
+        if (!bookings[session]) {
+            bookings[session] = {};
+        }
+
+        bookings[session][date] = booking;
+
+        return bookings;
+    }, {});
 }
+/*
+reduce(bookings, booking) => bookingsArray 배열 각 요소들 booking 객체의 값을 
+Grid 컴포넌트에 표시할 수 있는 객체로 변환하는 함수 실행 후 순서대로 bookings 객체에 누적시킨다.
+//======배열의 reduce 메소드 ========
+const array1 = [1, 2, 3, 4];
 
-
-const result = getGrid(bookable, new Date("2024-09-29"))
-console.log('-->', result)   // grid 객체
-
-//자바스크립트 프로퍼티 get/set 할 때, 객체.프로퍼티이름 또는 객체[프로퍼티이름]
-const grid = result.grid
-console.log('--',grid["Lunch"])
-console.log('---',grid["Lunch"]["2024-10-01"])
+// 0 + 1 + 2 + 3 + 4
+const initialValue = 0;
+const sumWithInitial = array1.reduce(
+  (accumulator, currentValue) => accumulator + currentValue,
+  initialValue,
+);
  */
+

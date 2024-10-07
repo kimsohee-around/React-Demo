@@ -1,7 +1,18 @@
-import {FaCalendarDay, FaChevronLeft, FaChevronRight} from "react-icons/fa";
+import {FaCalendarDay, FaChevronLeft, FaChevronRight,FaCalendarCheck} from "react-icons/fa";
 import {formatDate} from "../utils/date-utils.js";
+import {useRef} from "react";
 
 function WeekPicker({week,dispatch}){
+    //* go 버튼 추가 : useRef 새로이 사용한 훅
+    const textboxRef = useRef();
+
+    function goToDate () {
+        dispatch({
+            type: "SET_DATE",
+            payload: textboxRef.current.value
+        });
+    }
+    
     return (
         <div>
             <p className="date-picker">
@@ -11,24 +22,21 @@ function WeekPicker({week,dispatch}){
                     <FaChevronLeft/>
                     <span>PREV</span>
                 </button>
-                <input type="date" defaultValue={formatDate(new Date())}
-                       onChange={(e) => dispatch({
-                           type: "SET_DATE",
-                           payload: e.target.value
-                       })}
-                />
-                {/* 입력값을 state(상태값)으로 관리하면....
-                    이 예제에서는 날짜 타입으로 변환되는 문자열이 아니면
-                    예상치 않은 결과로 보입니다.
-                    입력값을 state 관리는 기능에 맞는 경우에만 사용합니다.
-                */}
-                <input type="text" placeholder="yyyy-mm-dd"
-                       defaultValue={formatDate(new Date())}
-                       onChange={(e) => dispatch({
-                           type: "SET_DATE",
-                           payload: e.target.value
-                       })}
-                />
+                <span>
+                  <input
+                      type="text"
+                      ref={textboxRef}
+                      placeholder="YYYY-MM-DD"
+                      defaultValue={formatDate(new Date())}
+                  />
+                <button
+                    className="go btn"
+                    onClick={goToDate}
+                >
+                  <FaCalendarCheck/>
+                  <span>Go</span>
+                </button>
+              </span>
                 <button
                     className="btn"
                     onClick={() => dispatch({type: "TODAY"})}>
@@ -52,8 +60,6 @@ function WeekPicker({week,dispatch}){
     )
 
 }
-
-
 
 
 export default WeekPicker
