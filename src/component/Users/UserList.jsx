@@ -1,17 +1,16 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import PageSpinner from "../UI/PageSpinner.jsx";
+import UserContext from "./UserContext.js";
 
 // 형제 컴포넌트 UserDetails 와 공유해야 합니다.
-function UserList ({user, setUser}){
+function UserList (){
     const [users, setUsers] = useState(null)    //순서4) fetch 결과 상태값 저장
     // fetch 중 오류 또는 로딩 중에 상태값
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(true)
 
-    // index 를 사용하면 이벤트 핸들러가 아닌 곳에서 상태 변경 함수를 실행
-    // 그래서 index 를 사용하지 않도록 리팩토링.
-    // setUser(users?.[userIndex])
-
+    //user 상태값을 UserContext 에서 가져옵니다.
+    const {user, setUser} = useContext(UserContext)
     //api 서비스 제공하는 서버로부터 데이터 가져오기
     useEffect(() => {
         setLoading(true)

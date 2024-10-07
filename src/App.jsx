@@ -5,10 +5,15 @@ import UserPicker from "./component/Users/UserPicker.jsx";
 import BookingsPage from "./component/Bookings/BookingsPage.jsx";
 import BookablePage from "./component/Bookables/BookablePage.jsx";
 import UsersPage from "./component/Users/UsersPage.jsx";
+import {useState} from "react";
+import UserContext from "./component/Users/UserContext.js";
 
 function App() {
+  const [user, setUser] = useState()
+  console.log('-App user -',user)
 
   return (
+    <UserContext.Provider value={{user,setUser}}>
     <BrowserRouter>
         <div className="App">
             <header>
@@ -45,6 +50,7 @@ function App() {
 
         </div>
     </BrowserRouter>
+    </UserContext.Provider>
     /* 사용자 선택한 메뉴 항목에 따라 화면에 보이는 UI 를 결정합니다.*/
 
   )
