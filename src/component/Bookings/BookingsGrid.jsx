@@ -10,7 +10,12 @@ export default function BookingsGrid ({week, bookable, booking, setBooking}){
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(true);
 
-    const {grid, sessions, dates}=  bookable ? getGrid(bookable, week.start) : {}
+    // 비용(시간) 이 높은 함수 getGrid 를 useMemo 훅 사용하기
+    //  네트워크 지연시 시간이 오래 걸릴 getGrid 함수를 메모화
+    const {grid, sessions, dates}=  useMemo(
+        () => bookable ? getGrid(bookable, week.start) : {},
+        [bookalbe,week.start]
+    )
     /* grid 객체는 예약 가능 자원 요소들을 저장한 객체.
     *
     * bookings 는 예약 정보가 저장된 객체. 해당 session과 date 에 예약 정보를 가져오기. 정보가 없다면
