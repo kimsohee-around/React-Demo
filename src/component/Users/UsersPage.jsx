@@ -1,12 +1,17 @@
-import UserList from "./UserList.jsx";
+import UsersList from "./UserList.jsx";
+import {useContext, useState} from "react";
+import UserDetails from "./UserDetails.jsx";
 
-function UsersPage(){
-    return(
+
+function UsersPage () {
+    const [user, setUser] = useState(null);
+
+
+    return (
         <main className="users-page">
-           <UserList/>
-
+            <UsersList user={user} setUser={setUser}/>
+            <UserDetails user={user}/>
         </main>
-    )
+    );
 }
-
 export default UsersPage
