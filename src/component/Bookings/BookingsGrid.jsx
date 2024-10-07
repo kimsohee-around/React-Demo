@@ -1,5 +1,5 @@
-import {useState} from "react";
-import {getGrid} from "./grid-builder.js";
+import {useState, useMemo, useEffect} from "react";
+import {getGrid, transformBookings} from "./grid-builder.js";
 import {formatDateDay} from '../utils/date-utils.js'
 import Spinner from "../UI/Spinner.jsx";
 import {getBookings} from "../utils/api.js";
@@ -25,36 +25,65 @@ export default function BookingsGrid ({week, bookable, booking, setBooking}){
             setError(false);
             setBooking(null);
 
-    //booings는 api 에서 받아옵니다.
-    const bookings = [
-        {
-            "session": "Lunch",
-            "date": "2024-09-23",
-            "bookableId": 3,
-            "title": "Football Challenge",
-            "bookerId": 3,
-            "id": 2
-        },
-        {
-            "session": "Breakfast",
-            "date": "2024-09-26",
-            "bookableId": 3,
-            "title": "Tiddlywinks",
-            "bookerId": 2,
-            "id": 5
+            getBookings(bookable.id, week.start, week.end)
+                .then(resp => {
+                    if (doUpdate) {
+                        setBookings(transformBookings(resp));
+                    }
+                    setLoading(false)
+                    // console.log('g-2',bookings)
+                })
+                .catch(setError);
+
+            return () => doUpdate = false;
         }
-    ]
-    const {grid, sessions, dates}
-             = bookable? getGrid(bookable,week.start):{}
+    }, [week, bookable, setBooking]);
+    /*
+    비동기 작업(getBookings)이 완료되기 전에 컴포넌트가 언마운트될 경우, 더 이상 상태를 업데이트할 필요가 없습니다.
+    그럼에도 불구하고 상태 업데이트를 시도하면 메모리 누수 경고가 발생.
+    doUpdate 변수값으로 컴포넌트가 계속 마운트된 상태일 때만 상태 업데이트하도록 조건 설정.
+    정리 함수 doUpdate = false. -> 언마운트 할때 실행.
+    */
+
+    function cell (session, date) {
+        const cellData = bookings?.[session]?.[date]   /* 결과가 false 이면*/
+            || grid[session][date];        /* or 연산 뒤의 수식을 수행하는 단축평가연산*/
+
+        //순서2) booking 의 session과 date 속성값이 현재 셀 위치의 session, date 와 같으면
+        // isSelected 를 참으로 하여 css 를 적용하기
+        const isSelected = booking?.session === session
+            && booking?.date === date;
+
+        return (
+            <td
+                key={date}
+                className={isSelected ? "selected" : null}
+                onClick={bookings ? () => setBooking(cellData) : null}
+            >  {/*순서1) 그리드의 각 셀을 클릭했을 때 해당 cellData 정보가 booking 에 저장*/}
+                {cellData.title}
+            </td>
+        );
+    }
+
+    if (loading) {
+        return <p><Spinner/> Loading...</p>
+    }
+
 
     return (
-        <table className={bookings? "bookingsGrid active":"bookingsGrid"}
-        >
-            <thead>
+        <>
+            {error && (
+                <p className="bookingsError">
+                    {`There was a problem loading the bookings data (${error})`}
+                </p>
+            )}
+            <table className={bookings? "bookingsGrid active":"bookingsGrid"}
+            >
+                <thead>
                 <tr>
                     <th>
                         <span className="status">
-                            <Spinner/>
+                         {!(dates && sessions && grid) && <Spinner/>}
                         </span>
                     </th>
                     {dates && dates.map(d => (
@@ -63,16 +92,17 @@ export default function BookingsGrid ({week, bookable, booking, setBooking}){
                         </th>
                     ))}
                 </tr>
-            </thead>
-            <tbody>
-            {sessions && sessions.map(session => (
-                <tr key={session}>
-                    <th>{session}</th>
-                    {dates.map(date => "")}
-                </tr>
-            ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {sessions && sessions.map(session => (
+                    <tr key={session}>
+                        <th>{session}</th>
+                        {dates.map(date => cell(session, date))}
+                        {/* 위의 cell 함수 실행으로 반환된 td 요소 출력*/}
+                    </tr>
+                ))}
+                </tbody>
+            </table>
+        </>
     )
-
 }
