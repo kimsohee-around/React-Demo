@@ -14,7 +14,7 @@ export default function BookingsGrid ({week, bookable, booking, setBooking}){
     //  네트워크 지연시 시간이 오래 걸릴 getGrid 함수를 메모화
     const {grid, sessions, dates}=  useMemo(
         () => bookable ? getGrid(bookable, week.start) : {},
-        [bookalbe,week.start]
+        [bookable,week.start]
     )
     /* grid 객체는 예약 가능 자원 요소들을 저장한 객체.
     *
