@@ -13,6 +13,5 @@ const Todos = ({ todos, addTodo }) => {
         </>
     );
 };
-
-export default Todos;
-// export default memo(Todos);
+// export default Todos;
+export default memo(Todos)
