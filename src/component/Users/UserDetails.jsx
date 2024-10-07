@@ -1,6 +1,10 @@
-export default function UserDetails ({user}) {
+import {useContext} from "react";
+import UserContext from "./UserContext.js";
 
-    console.log("--UserDetails--",user)
+export default function UserDetails () {
+
+    // console.log("--UserDetails--",user)
+    const {user} = useContext(UserContext)
 
     return user ? (
         <div className="item user">
