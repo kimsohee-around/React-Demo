@@ -4,13 +4,14 @@
 리액트 라우터  https://reactrouter.com
 : 사용자 페이지의 컴포넌트를 전환
 : useParams, useSearchParams - URL 의 경로 또는 파라미터 값들을 가져올 수 있다.
-: useNavigate  - 새로운 URL로 바꾸기
+: useNavigate  - 새로운 URL로 바꿀 수 있는 함수를 반환한다.
 : useQuery - 데이터를 효율적으로 읽어오고 캐싱하기
 : useMutation - 서버의 데이터 갱신하기
 
 
-useParams 를 이용하여 BookableList 리팩토링하기
+※ 아래 예시 URL 중 조회 기능은 브라우저 주소창에 입력해도 결과를 볼수 있다. (json-server 가 처리해줌.)
 
+useParams 를 이용하여 BookableList 리팩토링하기
 : 다음과 같은 URL 을 처리한다.
     /bookables                       -> ID가 없는 경우에는 인덱스 0 (첫번쨰) 예약 자원을 선택한다.
     /bookables/3                     -> ID가 3인 예약 자원 선택하고 세부정보 표시하기
@@ -20,6 +21,18 @@ useParams 를 이용하여 BookableList 리팩토링하기
 : App.jsx
 : BookablesPage.jsx 에 url 에 따른 컴포넌트 선택 추가
 : BookablesView.jsx 에서 서버와 통신 fetch 실행.    
+: BookableList.jsx 가 전달 받는 state 변경하기
+                      ㄴ Bookings 도 오류가 생김.
 
 
+※ 페이지에 표시하는 데이터가 정적인 특징이 많다면 기존 방식대로 한번의 fetch로 저장된 배열값을 사용할 수 있지만
+데이터가 수시로 변경(생성,수정,삭제)되는 경우라면 지금과 같이 다시 요청을 보내서 가져온다.
+(게시판 프로젝트 참고)
+
+
+
+useSearchParams 를 이용하여 Bookings 리팩토링하기
+: 다음과 같은 URL 을 처리한다.
+    /bookings?bookableId=1          -> ID 값이 1 인 예약자원의 예약목록 가져오기
+    /bookings?bookableId=1&date=2024-09-22      -> id 값이 1이고 예약날짜가 2024-09-22 인 예약목록 가져오기
 
