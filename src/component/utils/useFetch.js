@@ -13,7 +13,13 @@ export default function useFetch(url){
         setData(undefined)
         setError(null)
 
-        loadData(url)
+        fetch(url)
+            .then(resp =>{
+                if(!resp.ok){
+                    throw new Error("There wa a problem fecthing data.")
+                }
+                return resp.json()
+            })
             .then(data =>{
                 if(doUpdate){
                     setData(data)
