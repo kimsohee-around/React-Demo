@@ -17,8 +17,10 @@
 
 커스텀 훅 예제
 : 데이터 읽어오기 useFetch
-: BookingsGrid 에 있는 useEffect 를 캡슐화
+: BookingsGrid 에 있는 useEffect 형식으로 캡슐화
   ㄴ 변수명은  bookable 대신에 data , loading 대신에 status(다양한 상태저장)
+  ㄴ BookableList, UserPicker , UserList
+  ㄴ BookingsGrid 는 매번 다른 값의 쿼리스트링을 포함하므로 별도로 만들어야 함.
 
 
 ==== 참고====

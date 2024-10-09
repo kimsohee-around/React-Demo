@@ -1,41 +1,28 @@
 import {useContext, useEffect, useState} from "react";
 import PageSpinner from "../UI/PageSpinner.jsx";
 import UserContext from "./UserContext.js";
+import useFetch from "../utils/useFetch.js";
+import Spinner from "../UI/Spinner.jsx";
 
 // 형제 컴포넌트 UserDetails 와 공유해야 합니다.
 function UserList (){
-    const [users, setUsers] = useState(null)    //순서4) fetch 결과 상태값 저장
-    // fetch 중 오류 또는 로딩 중에 상태값
-    const [error, setError] = useState(null)
-    const [loading, setLoading] = useState(true)
-
-    //user 상태값을 UserContext 에서 가져옵니다.
     const {user, setUser} = useContext(UserContext)
-    //api 서비스 제공하는 서버로부터 데이터 가져오기
+    const {data:users=[],status, error} = useFetch("http://localhost:3001/users")
+
     useEffect(() => {
-        setLoading(true)
-        fetch("http://localhost:3001/users")  // 순서1)
-            .then( response =>{
-                return response.json()
-            })
-            .then(data => {                     // 순서2) users 배열이 data로 저장
-                console.log("data",data)
-                setUsers(data)                  // 순서3) 상태 users 변경
-                setLoading(false)
-            })
-            .catch((error) => setError(error.message))
-    }, []);
+        setUser(users[0])
+    }, [users,setUser]);
     //[] 의존값.없으면 컴포넌트 실행될 때 처음 1번만 useEffect 동작
     //[data] 의존값이 있으면 data 값이 변경될 때마다 useEffect 실행
+    //useEffect 에서 다루는 변수와 함수를 포함시키도록 함.(
+
     //상태값 변수
-    if(error) {
-        return <div>오류 : {error}</div>
+    if (status === "error") {
+        return <p>{error.message}</p>
     }
 
-  if(loading) {
-        return (
-                <PageSpinner/>
-        )
+    if (status === "loading") {
+        return <p><Spinner/> Loading bookables...</p>
     }
 
   //순서 6) users, user 상태값으로 UI를 만듭니다.
