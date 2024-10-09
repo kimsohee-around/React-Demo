@@ -4,13 +4,17 @@ import Bookings from "./Bookings.jsx";
 import useFetch from "../utils/useFetch.js";
 import { useSearchParams } from "react-router-dom";
 import PageSpinner from "../UI/PageSpinner.jsx";
+import { useQuery } from "react-query";
+import loadData from "../utils/api.js";
 
 function BookingsPage(){
     // const [bookable, setBookable] = useState(null);
 
-    const {data: bookables = [], status, error} = useFetch(
-        "http://localhost:3001/bookables"
+    const {data: bookables = [], status, error} = useQuery(
+        "bookables",
+        () => loadData("http://localhost:3001/bookables")
     );
+
     // useSearchParams() : 검색파라미터에 접근하기 위한 객체와 검색파라미터 설정함수를 저장한 배열을 리턴해 준다.
     const [searchParam,setSearchParam] = useSearchParams()
     // 리턴받은 객체는 get 메소드를 제공한다.

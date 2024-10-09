@@ -1,4 +1,4 @@
-import {shortISO} from "./date-utils.js";
+import {formatDate, shortISO} from "./date-utils.js";
 
 export default function loadData(url){
     return fetch(url)
@@ -11,8 +11,8 @@ export default function loadData(url){
 }
 
 export function getBookings(bookableId, startDate, endDate){
-    const start = shortISO(startDate)
-    const end = shortISO(endDate)
+    const start = formatDate(startDate)
+    const end = formatDate(endDate)
     const urlRoot = "http://localhost:3001/bookings";
 
     const query = `bookableId=${bookableId}&start=${start}&end=${end}`

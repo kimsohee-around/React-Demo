@@ -4,12 +4,16 @@ import BookableDetails  from "./BookableDetails.jsx";
 import BookablesList from "./BookablesList.jsx";
 import { FaPlus } from "react-icons/fa";
 import PageSpinner from "../UI/PageSpinner.jsx";
+import { useQuery } from "react-query";
+import loadData from "../utils/api.js";
 
 export default function BookablesView () {
     
-    const {data: bookables = [], status, error} = useFetch(
-        "http://localhost:3001/bookables"
+    const {data: bookables = [], status, error} = useQuery(
+        "bookables",
+        ()=> loadData("http://localhost:3001/bookables")
     );
+
 
     // useParams : url 경로에서 모든 파라미터 값을 저장한 객체를 반환한다. 
     const {id} = useParams();
