@@ -2,34 +2,27 @@ import { useEffect, useState} from "react";
 import {FaArrowRight} from "react-icons/fa";
 import Spinner from "../UI/Spinner.jsx";
 import loadData from "../utils/api.js";
+import useFetch from "../utils/useFetch.js";
 
 // bookables 는 전체 목록, bookable 은 목록 중에 선택한 하나의 객체를 컴포넌트 프롭으로 받음.
 //자식 컴포넌트에서 부모컴포넌트가 전달한 state 변수를 props 로 받음.
 export default function BookablesList ({bookable, setBookable}) {
-    //자식 BookablesList 컴포넌트가 관리하는 state 변수 선언
-    //예약 가능 자원 데이터를 fetch 수신하는데 필요한 상태 변수
-    const [bookables, setBookables] = useState([]);
-    const [error, setError] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
+
+    //커스텀 훅
+    // useFetch 결과 data 프로퍼티 값은 bookables 변수에 할당,
+    // data 프로퍼티 없으면 빈 배열 []
+    const {data:bookables=[], status, error} = useFetch(
+        "http://localhost:3001/bookables"
+    )
 
     const group = bookable?.group;
     const bookablesInGroup = bookables.filter(b => b.group === group);
     const groups = [...new Set(bookables.map(b => b.group))];
 
+    //데이터를 fetch 후 bookables 가 저장되면 첫번째 것으로 bookable 설정
     useEffect(() => {
-        loadData("http://localhost:3001/bookables")
-            .then(bookables => {
-                setBookable(bookables[0]);
-      //fetch 결과 bookable 을 변경 -> 프롭으로 받은 상태변수로
-                //변경결과 부모 컴포넌트에게 상향
-                setBookables(bookables);
-                setIsLoading(false);
-            })
-            .catch(error => {
-                setError(error);
-                setIsLoading(false);
-            });
-    }, [setBookable]);
+        setBookable(bookables[0])
+    }, [bookables]);
 
     function changeGroup (e) {
         const bookablesInSelectedGroup = bookables.filter(
@@ -45,11 +38,11 @@ export default function BookablesList ({bookable, setBookable}) {
         setBookable(nextBookable);
     }
 
-    if (error) {
+    if (status === "error") {
         return <p>{error.message}</p>
     }
 
-    if (isLoading) {
+    if (status === "loading") {
         return <p><Spinner/> Loading bookables...</p>
     }
 
