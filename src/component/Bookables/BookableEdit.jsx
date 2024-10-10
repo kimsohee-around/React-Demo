@@ -28,11 +28,11 @@ export default function BookableEdit () {
     // const formState = useFormState(data);
     const [state, setState] = useState(data)
 
-/*    useEffect(()=>{
-        if(data){
-            setState(data)
-        }
-    },[data])*/
+     useEffect(()=>{
+            if(data){
+                setState(data)
+            }
+        },[data])
 
 
 
