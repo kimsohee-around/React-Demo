@@ -4,7 +4,7 @@
       "id": 1,
       "group": "Rooms",
       "title": "Meeting Room",
-      "notes": "The one with the big table and interactive screen. Seats 12. See Colin if you need the tea and coffee trolley.",
+      "notes": "The one with the big table and interactive screen. Seats 12. See Colin if you need the tea and coffee trolley.\n❤",
       "sessions": [
         1,
         2,
@@ -15,8 +15,7 @@
         2,
         3,
         4,
-        5,
-        0
+        5
       ]
     },
     {
@@ -187,14 +186,6 @@
       "title": "Tiddlywinks",
       "bookerId": 2,
       "id": 5
-    },
-    {
-      "session": "Lunch",
-      "date": "2024-09-25",
-      "bookableId": 7,
-      "title": "Movie Pitch!",
-      "bookerId": 1,
-      "id": 6
     },
     {
       "session": "Lunch",

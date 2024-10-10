@@ -400,3 +400,42 @@ header .icon-loading {
   padding-right: 1em;
 }
 
+
+.bookables-form {
+  max-width: 70em;
+  margin:1em auto;
+}
+
+
+.bookables-form .controls {
+  text-align: right;
+}
+
+.bookables-form .controls-alt {
+  float: left;
+}
+
+.item-form {
+  /*width:100%;*/
+}
+
+.item-form input[type=text] {
+  padding:0.5em 1em;
+  border-radius:1em;
+  border:none;
+  font-size:100%;
+}
+
+.item-form textarea {
+  font-size: 100%;
+  padding:0.5em 1em;
+  width:80%;
+  max-width:60em;
+  margin-bottom: 1em;
+}
+
+.item-form label.field {
+  display: block;
+  margin:1em 0 3px;
+}
+

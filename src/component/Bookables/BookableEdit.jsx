@@ -1,19 +1,18 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useQueryClient, useQuery, useMutation} from "react-query";
 
-import useFormState from "./useFormState.js";
-import BookableFormV from "./BookableFormV.jsx";
 import PageSpinner from "../UI/PageSpinner";
-import loadData, {createItem, deleteItem, editItem} from "../utils/api.js";
-import BookableFormU from "./BookableFormU.jsx";
+import loadData, { deleteItem, editItem} from "../utils/api.js";
+import BookableForm from "./BookableForm.jsx";
 import {useEffect, useState} from "react";
+import useFormState from "./useFormState.js";
 
 export default function BookableEdit () {
     const {id} = useParams();
     const queryClient = useQueryClient();
 
     // 캐시를 이용하여 bookable을 읽어온다.
-    const {data, isLoading} = useQuery(
+    const {data, isLoading,isError,error} = useQuery(
         ["bookable", id],
         () => loadData(`http://localhost:3001/bookables/${id}`),
         {
@@ -25,36 +24,62 @@ export default function BookableEdit () {
     // 세번째 인자는 설정 객체: 초기 설정 및 캐시만료 , 데이터 읽기 오류시 실행할 재시도 정책 등
     //                캐시에 저장된 데이터를 직접 가져온다. queryClient.getQueryData("bookables")
 
+    console.log('BookableEdit data',data)
     // const formState = useFormState(data);
-    const [state, setState] = useState(data)
+    const [state, setState] = useState()
 
-
-    function handleDelete () {
-        if (window.confirm("Are you sure you want to delete the bookable?")) {
-            // call the mutation function for deleting the bookable
-            deleteItem(``)
+    useEffect(()=>{
+        if(data){
+            setState(data)
         }
+    },[data])
+
+    function handleChange (e) {
+        setState({
+            ...state,
+            [e.target.name]: e.target.value
+        });
     }
 
+    function handleChecked (e) {
+        const {name, value, checked} = e.target;
+        const values = new Set(state[name]);
+        const intValue = parseInt(value, 10);
 
-    function handleSubmit () {
-        updateBookable(formState.state)
-        alert('수정되었습니다.!')
-        // setState(updateBookable)
+        values.delete(intValue);
+        if (checked) values.add(intValue);
+
+        setState({
+            ...state,
+            [name]: [...values]
+        });
     }
 
-    if (isUpdateError || isDeleteError) {
-        return <p>{updateError?.message || deleteError.message}</p>
+  const navigate = useNavigate()
+     function handleDelete() {
+        const bookable =  deleteItem(`http://localhost:3001/bookables/${state.id}`)
+        // alert(`${bookable.title} 삭제되었습니다.`)
+        console.log('handleDelete',bookable)
+        navigate(`/bookables`)
     }
 
-    if (isLoading || isUpdating || isDeleting) {
+     function handleSubmit() {
+        const bookable =  editItem(`http://localhost:3001/bookables/${state.id}`, state)
+        console.log('handleSubmit',bookable)
+        navigate(`/bookables/${bookable.id}`)
+    }
+
+    if (isError) {
+        return <p>{error?.message || error.message}</p>
+    }
+
+    if (isLoading ) {
         return <PageSpinner/>
     }
 
     return (
-        <BookableFormV
-            formState={formState}
-            // formState = {{state, handleChange, handleChecked}}
+        <BookableForm
+            formState = {{state,handleChange,handleChecked}}
             handleSubmit={handleSubmit}
             handleDelete={handleDelete}
         />
