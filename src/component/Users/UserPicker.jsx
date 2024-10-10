@@ -1,28 +1,27 @@
 import {useContext, useEffect, useState} from "react";
 import Spinner from "../UI/Spinner.jsx";
 import UserContext from "./UserContext.js";
+import useFetch from "../utils/useFetch.js";
 
 export default function UserPicker(){
-    const [users, setUsers] = useState(null)    //users 는 배열
     // const [user, setUser] = useState(null)
     //        ㄴ ->UserContext 를 통해서 관리하는 것으로 변경.
     // user 상태값을 가져오기 위해 useContext 훅을 사용해야 합니다.
     const {user, setUser} = useContext(UserContext)
+   // "http://localhost:3001/users"  , setUser(data[0])   //순서1) 초기값 0번으로 설정
 
-    console.log('UserPicker user',user)
+    const {data: users=[], status} = useFetch(
+        "http://localhost:3001/users"
+    )
 
     useEffect(() => {
-        fetch("http://localhost:3001/users")
-            .then(resp=> resp.json())
-            .then(
-                data => {
-                    setUsers(data)
-                    setUser(data[0])   //순서1) 초기값 0번으로 설정
-                }
-            )
-    }, [setUser]);
+        setUser(users[0])
+    }, []);
 
-    console.log('UserPicker users',users)
+    if(status === "loading"){
+        return <Spinner/>
+    }
+
 
     function handleSelect(e){
         //문자열
