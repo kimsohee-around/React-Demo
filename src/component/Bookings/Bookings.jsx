@@ -9,7 +9,7 @@ export default function Bookings({bookable}){
     const [week, dispatch] = useReducer(
         weekReducer,new Date(), getWeek
     )
-    // 예약 정보 저장
+    // 예약 정보 저장. BookingsGrid UI 에서 한칸(cell) 선택하면 booking 변경
     const [booking, setBooking] = useState(null)
 
     return (

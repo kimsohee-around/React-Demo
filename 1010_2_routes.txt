@@ -32,3 +32,8 @@ useSearchParams 를 이용하여 Bookings 리팩토링하기
     /bookings?bookableId=1          -> ID 값이 1 인 예약자원의 예약목록 가져오기
     /bookings?bookableId=1&date=2024-09-22      -> id 값이 1이고 예약날짜가 2024-09-22 인 예약목록 가져오기
 
+
+
+
+
+
