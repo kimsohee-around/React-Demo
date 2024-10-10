@@ -26,4 +26,41 @@ React Query
     ㄴ 그래서 데이터를 읽어올 비동기 함수를 전달한다.
     ㄴ key 는 문자열, 배열, 객체 모두 가능한다.
 : 캐시에 저장된 값을 읽어올 떄에는 getQueryData 메소드를 사용한다.
-    
+
+
+http://localhost:5173/bookables/2/edit  실행방법
+- 1) http://localhost:5173/bookables/ 에서 2번을 클릭하고 edit 버튼
+- 2) 주소창에서 바로 입력하고 실행 -> 스피너 동작
+
+//=== 코드 주석 ===//
+
+  const {data, isLoading} = useQuery(
+        ["bookable", id],           ====> key
+        () => loadData(`http://localhost:3001/bookables/${id}`),   ===> 비동기함수
+        {                               ===> 초깃값을 데이터에 할당  340p
+            initialData:
+                queryClient.getQueryData("bookables")
+                    ?.find(b => b.id === parseInt(id, 10))
+        }
+    );
+    // 세번째 인자는 설정 객체: 초기 설정 및 캐시만료 , 데이터 읽기 오류시 실행할 재시도 정책 등
+    //                처음 호출될 때 초기 데이터가 있으면 서버에서 데이터를 읽어오지 않느다?
+
+
+useMutation
+: 리액트 UI 와 서버에 저장된 데이터 상태 동기화를 지원한다.
+: useQuery 는 값을 읽어오고 상태값을 브라우저에 일시적으로 캐싱
+: useMutaion 은 서버의 상태를 변경
+
+const {mutate:createBookable, status,error} = useMutation(              ==> 변경함수 리턴하여 createBookable 에 할당
+        item =>createItem("http://localhost:3001/bookables",item),     ==> 실행할 비동기 함수 전달.
+        {
+            onSuccess: bookable =>{                             ==> 비동기 함수 처리가 성공하면
+                queryClient.setQueryData(
+                    "bookables",                                ==> bookables 쿼리 캐시에 새로운 bookable 추가
+                    old=> [...(old || []),bookable]
+                )
+                navigate(`/bookables/${bookable.id}`)           ==> 새로운 url로 이동
+            }
+        }
+    )

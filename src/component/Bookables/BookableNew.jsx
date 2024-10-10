@@ -9,8 +9,9 @@ export default function BookableNew(){
     const navigate = useNavigate()
 
     function handleSubmit(){
-        const bookable = createItem("http://localhost:3001/bookables",formState.state)
-        navigate(`/bookables/${bookable.id}`)
+        const result = createItem("http://localhost:3001/bookables",formState.state)
+        console.log('BookableNew',result)
+        navigate(`/bookables/${result.value.id}`)
     }
 
     const formState = useFormState()

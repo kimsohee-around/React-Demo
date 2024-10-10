@@ -26,34 +26,15 @@ export default function BookableEdit () {
 
     console.log('BookableEdit data',data)
     // const formState = useFormState(data);
-    const [state, setState] = useState()
+    const [state, setState] = useState(data)
 
-    useEffect(()=>{
+/*    useEffect(()=>{
         if(data){
             setState(data)
         }
-    },[data])
+    },[data])*/
 
-    function handleChange (e) {
-        setState({
-            ...state,
-            [e.target.name]: e.target.value
-        });
-    }
 
-    function handleChecked (e) {
-        const {name, value, checked} = e.target;
-        const values = new Set(state[name]);
-        const intValue = parseInt(value, 10);
-
-        values.delete(intValue);
-        if (checked) values.add(intValue);
-
-        setState({
-            ...state,
-            [name]: [...values]
-        });
-    }
 
   const navigate = useNavigate()
      function handleDelete() {
@@ -79,7 +60,7 @@ export default function BookableEdit () {
 
     return (
         <BookableForm
-            formState = {{state,handleChange,handleChecked}}
+            formState = {{state,setState}}
             handleSubmit={handleSubmit}
             handleDelete={handleDelete}
         />

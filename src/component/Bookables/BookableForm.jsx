@@ -4,10 +4,31 @@ import {FaCloudUploadAlt, FaTrash, FaWindowClose} from "react-icons/fa";
 import {days as daysArray, sessions as sessionsArray} from "../../static.json";
 
 export default function BookableForm ({formState={}, handleSubmit, handleDelete}) {
-    const {state = {}, handleChange, handleChecked} = formState;
+    // const {state = {}, handleChange, handleChecked} = formState;
+    const {state = {}, setState} = formState;
     const {title = "", group = "", notes = ""} = state;
     const {days = [], sessions = []} = state;
 
+    function handleChange (e) {
+        setState({
+            ...state,
+            [e.target.name]: e.target.value
+        });
+    }
+
+    function handleChecked (e) {
+        const {name, value, checked} = e.target;
+        const values = new Set(state[name]);
+        const intValue = parseInt(value, 10);
+
+        values.delete(intValue);
+        if (checked) values.add(intValue);
+
+        setState({
+            ...state,
+            [name]: [...values]
+        });
+    }
 
     return (
         <main className="bookables-form">
