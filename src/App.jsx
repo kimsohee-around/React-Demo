@@ -44,7 +44,9 @@ function App() {
 
         <Routes>
             <Route path="/bookings" element={<BookingsPage/>}/>
-            <Route path="/bookables" element={<BookablePage/>}/>
+            {/* url 경로를 확장하기 위하여 path 수정 
+                세부적인 처리는 BookablePage 에서 정의*/}
+            <Route path="/bookables/*" element={<BookablePage/>}/>
             <Route path="/users" element={<UsersPage/>}/>
         </Routes>
 
