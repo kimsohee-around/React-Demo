@@ -2,6 +2,8 @@ import {useContext, useEffect, useState} from "react";
 import Spinner from "../UI/Spinner.jsx";
 import UserContext from "./UserContext.js";
 import useFetch from "../utils/useFetch.js";
+import {useQuery} from "react-query";
+import loadData from "../utils/api.js";
 
 export default function UserPicker(){
     // const [user, setUser] = useState(null)
@@ -10,9 +12,11 @@ export default function UserPicker(){
     const {user, setUser} = useContext(UserContext)
    // "http://localhost:3001/users"  , setUser(data[0])   //순서1) 초기값 0번으로 설정
 
-    const {data: users=[], status} = useFetch(
-        "http://localhost:3001/users"
+    const {data:users=[],status,error} = useQuery(
+        "users",
+        ()=> loadData("http://localhost:3001/users")
     )
+    console.log('status',status)
 
     useEffect(() => {
         setUser(users[0])

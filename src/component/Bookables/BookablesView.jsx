@@ -30,7 +30,7 @@ export default function BookablesView () {
     const bookable = bookables.find(b => b.id === parseInt(id,10)) || bookables[0];
 
     if (status === "error") {
-        return <p>{error.message}</p>
+        return <p>{error}</p>
     }
 
     if (status === "loading") {

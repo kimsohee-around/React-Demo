@@ -2,6 +2,8 @@ import {useContext, useEffect, useState} from "react";
 import PageSpinner from "../UI/PageSpinner.jsx";
 import UserContext from "./UserContext.js";
 import useFetch from "../utils/useFetch.js";
+import {useQuery} from "react-query";
+import loadData from "../utils/api.js";
 
 // 형제 컴포넌트 UserDetails 와 공유해야 합니다.
 function UserList (){
@@ -9,9 +11,11 @@ function UserList (){
     const {user, setUser} = useContext(UserContext)
 // "http://localhost:3001/users"
 
-    const {data:users=[],status,error} = useFetch(
-        "http://localhost:3001/users"
+    const {data:users=[],status,error} = useQuery(
+        "users",
+        ()=> loadData("http://localhost:3001/users")
     )
+
     useEffect(() => {
         setUser(users[0])
     }, [users,setUser]);
