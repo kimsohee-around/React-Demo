@@ -37,9 +37,17 @@ export default function BookableEdit(){
 
     console.log("--BookableEdit data",data)
 
+    function handleSubmit(){
+    }
+
+    function handleDelete(){
+    }
 
     //state 는 화면에 보여질 값들을 저장.
     return (
-       status==="success" && <BookableForm formState={{state,setState}}  />
+       status==="success" &&
+       <BookableForm
+           formState={{state,setState, handleSubmit, handleDelete}}
+       />
     )
 }
