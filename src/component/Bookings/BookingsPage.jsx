@@ -4,12 +4,14 @@ import Bookings from "./Bookings.jsx";
 import useFetch from "../utils/useFetch.js";
 import {useSearchParams} from "react-router-dom";
 import PageSpinner from "../UI/PageSpinner.jsx";
+import {useQuery} from "react-query";
+import loadData from "../utils/api.js";
 
 function BookingsPage(){
-    // 2) fetch 로 직접 해당 자원 조회하기 -> BookablsList 컴포넌트에게 전달
-    const {data:bookables=[],status,error} = useFetch(
-        "http://localhost:3001/bookables"
-    )
+    const {data: bookables = [], status, error} = useQuery(
+        "bookables",
+        ()=> loadData("http://localhost:3001/bookables")
+    );
 
     // 3) bookings?bookableId=3 과 같이 쿼리스트링값을 가져오기
     //  url 에 실려오는 쿼리문자열을 가져오기 위해 2개의 값을 배열로 리턴해 줍니다.
