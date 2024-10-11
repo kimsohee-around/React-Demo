@@ -1,6 +1,6 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useQuery, useQueryClient} from "react-query";
-import loadData, {editItem} from "../utils/api.js";
+import loadData, {editItem,deleteItem} from "../utils/api.js";
 import {useEffect, useState} from "react";
 import BookableForm from "./BookableForm.jsx";
 import PageSpinner from "../UI/PageSpinner.jsx";
@@ -45,7 +45,7 @@ export default function BookableEdit(){
 
     function handleDelete(){
         const result =deleteItem(`http://localhost:3001/bookables/${id}`)
-        navigate(`/bookables`)
+        navigate(`/bookables`)     // 삭제 후 삭제된 bookable 의 그룹 첫번째 값으로 이동
     }
 
     //state 는 화면에 보여질 값들을 저장.
