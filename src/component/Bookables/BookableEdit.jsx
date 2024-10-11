@@ -1,6 +1,6 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useQuery, useQueryClient} from "react-query";
-import loadData from "../utils/api.js";
+import loadData, {editItem} from "../utils/api.js";
 import {useEffect, useState} from "react";
 import BookableForm from "./BookableForm.jsx";
 import PageSpinner from "../UI/PageSpinner.jsx";
@@ -22,8 +22,8 @@ export default function BookableEdit(){
         }  // initialData 는 설정 옵션: 캐시 만료, 데이터 읽기 지연(오류) 문제를 해결하는 초기값
            //  fetch 문제. "bookables" 이름의 캐쉬값을 가져와서 id 와 같은 것으로 data 에 저장
     )
-
-
+    // 훅은 top 위치에서 선언하기 !!
+    const navigate = useNavigate()
     const [state, setState] = useState()
     useEffect(() => {
         if(data) {
@@ -37,17 +37,24 @@ export default function BookableEdit(){
 
     console.log("--BookableEdit data",data)
 
+    // url 변경하는 네비게이트 함수를 리턴받는다.
     function handleSubmit(){
+        const result = editItem(`http://localhost:3001/bookables/${id}`,state)
+        navigate(`/bookables/${id}`)
     }
 
     function handleDelete(){
+        const result =deleteItem(`http://localhost:3001/bookables/${id}`)
+        navigate(`/bookables`)
     }
 
     //state 는 화면에 보여질 값들을 저장.
     return (
        status==="success" &&
        <BookableForm
-           formState={{state,setState, handleSubmit, handleDelete}}
+           formState={{state,setState}}
+           handleSubmit={handleSubmit}
+           handleDelete={handleDelete}
        />
     )
 }

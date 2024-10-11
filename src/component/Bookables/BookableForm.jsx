@@ -4,9 +4,9 @@ import {Link} from "react-router-dom";
 
 // BookableNew 에서는 handleSubmit(post 저장) 함수만 전달
 // BookableEdit 에서는 handleDelete, handleSubmit(patch 또는 put 수정) 함수 2개 전달
-export default function BookableForm({formState={}}){
+export default function BookableForm({formState={},handleSubmit,handleDelete}){
     //state 가 undefined 일때를 위한 초기값 필요
-    const {state={},setState,handleDelete, handleSubmit} = formState
+    const {state={},setState} = formState
     const {title="",group="",notes=""} = state
     const {days=[], sessions=[]} = state
 
