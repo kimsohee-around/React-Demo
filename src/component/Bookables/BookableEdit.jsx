@@ -72,14 +72,15 @@ function useDeleteBookable () {
         {
             // onSuccess : 첫번째 인자는 서버에서 보낸 응답. 두번째 인자는 실행함수로 보낸 데이터
             onSuccess: (response, bookable) => {
-                // 현재 cache 에서 key 이름 "bookables" 가 있으면 삭제한 항목을 목록에서 제거하기
+                // 현재 cache 에서 key 이름 "bookables" 가져오기
                 const bookables = queryClient.getQueryData("bookables") || [];
                 console.log("useDeleteBookable bookable",bookable)
+                // 삭제한 bookable 만 제외 filter 하여 bookables 업데이트 
                 queryClient.setQueryData(
                     "bookables",
                     bookables.filter(b => b.id !== bookable.id)
                 );
-
+                // 삭제된 bookable 그룹의 첫번째 항목으로 url 바꾸기
                 navigate(`/bookables/${getIdForFirstInGroup(bookables, bookable) || ""}`);
             }
         }
