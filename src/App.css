@@ -419,7 +419,7 @@ header .icon-loading {
 }
 
 .item-form {
-  width:100%;
+  /*width:100%;*/
 }
 
 .item-form input[type=text] {
@@ -432,7 +432,7 @@ header .icon-loading {
 .item-form textarea {
   font-size: 100%;
   padding:0.5em 1em;
-  width:80%;
+  width:85%;
   max-width:60em;
   margin-bottom: 1em;
 }

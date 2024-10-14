@@ -190,14 +190,6 @@
     },
     {
       "session": "Lunch",
-      "date": "2024-09-25",
-      "bookableId": 7,
-      "title": "Movie Pitch!",
-      "bookerId": 1,
-      "id": 6
-    },
-    {
-      "session": "Lunch",
       "date": "2024-09-26",
       "bookableId": 1,
       "title": "New Employee Intro",
@@ -218,7 +210,8 @@
       "bookableId": 2,
       "title": "Quiz",
       "bookerId": 1,
-      "id": 9
+      "id": 9,
+      "notes": "hi"
     }
   ]
 }
