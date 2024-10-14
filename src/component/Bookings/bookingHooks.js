@@ -1,7 +1,8 @@
 import {formatDate} from "../utils/date-utils.js";
 import {useMutation, useQuery, useQueryClient} from "react-query";
-import {transformBookings} from "./grid-builder.js";
+import {getGrid, transformBookings} from "./grid-builder.js";
 import loadData, {createItem, deleteItem, editItem} from "../utils/api.js";
+import {useMemo} from "react";
 
 export function useBookings(bookableId, startDate, endDate) {
     const start = formatDate(startDate);
@@ -23,16 +24,22 @@ export function useBookings(bookableId, startDate, endDate) {
     };
 }
 
-// 새로운 예약 추가하는 함수를 리턴.
+export function useGrid (bookable, startDate) {
+    return useMemo(
+        () => bookable ? getGrid(bookable, startDate) : {},
+        [bookable, startDate]
+    );
+}
+
 export function useCreateBooking (key) {
     const queryClient = useQueryClient();
     const mutation = useMutation(
         item => createItem("http://localhost:3001/bookings", item),
         {
             onSuccess: (booking) => {
-                queryClient.invalidateQueries(key);   //key 값의 데이터를 무효화(이 데이터는 더이상 최신화 보장을 못한다.)
-                const bookings = queryClient.getQueryData(key) || [];   // key에 해당하는 캐쉬값을 가져오기 가능.
-                queryClient.setQueryData(key, [...bookings, booking]);  //key값의 데이터를 변경.
+                queryClient.invalidateQueries(key);
+                const bookings = queryClient.getQueryData(key) || [];
+                queryClient.setQueryData(key, [...bookings, booking]);
             }
         }
     );

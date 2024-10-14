@@ -1,37 +1,38 @@
-// grid(격자,테이블)
-// 행제목은 세션이름들
-// 열제목은 선택한 날짜 해당 주의 날짜들
-
-// 선택한 bookable 데이터를 격자구조로 출력할 수 있는 오브젝트만들기
+import {sessions as sessionNames} from "../../static.json";
 import {addDays, formatDate} from "../utils/date-utils.js";
-import {sessions as sessionNames} from "../../static.json"   //test-of-.... .js 파일 실행할때에는 주석처리 필수.
 
-export function getGrid(bookable, startDate){
-    // 선택한 날짜 해당 주의 날짜들 저장한 배열 생성
+/*const sessions= [
+    "Breakfast",
+    "Morning",
+    "Lunch",
+    "Afternoon",
+    "Evening"
+]*/
+
+export function getGrid (bookable, startDate) {
     const dates = bookable.days.sort().map(
-        d => formatDate(addDays(startDate,d))
-    )
-    // 선택한 bookable 의 sessions 숫자를 문자열 이름으로 저장한 배열 생성
-    // bookable.sessions 는 id: 3은 [0,2,4] 을 [ 'Breakfast', 'Lunch', 'Evening' ]
-    const sessions = bookable.sessions.map(
-        i=> sessionNames[i]
-    )
+        d => formatDate(addDays(startDate, d))
+    );
 
-    const grid = {}
+    const sessions = bookable.sessions.map(i => sessionNames[i]);
+
+    const grid = {};
+
     sessions.forEach(session => {
-        grid[session] ={}
-        dates.forEach(date => grid[session][date]={
+        grid[session] = {};
+        dates.forEach(date => grid[session][date] = {
             session,
             date,
-            bookableId : bookable.id,
-            title:""
-        })
-    })
-    //키이름과 변수명이 같으면 생략해서 하나만 써도 됩니다.
-    return { grid,  //grid: grid,
-             dates,
-             sessions: sessions
-           }
+            bookableId: bookable.id,
+            title: "", notes:""
+        });
+    });
+
+    return {
+        grid,
+        dates,
+        sessions
+    };
 }
 
 export function transformBookings (bookingsArray) {
@@ -48,10 +49,82 @@ export function transformBookings (bookingsArray) {
         return bookings;
     }, {});
 }
+
+// =====          위의 함수 테스트 ========
+const result = getGrid({
+    id: 3,
+    group: "Rooms",
+    title: "Games Room",
+    notes: "Table tennis, table football, pinball! There's also a selection of board games. Please tidy up!",
+    sessions: [
+        0,
+        2,
+        4
+    ],
+    days: [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6
+    ]
+},new Date("2024-09-22"));
+console.log("result",result)
+console.log("test",result.grid.Breakfast)
+
+const bookingArray = [
+    {
+        "session": "Lunch",
+        "date": "2024-09-22",
+        "bookableId": 1,
+        "title": "Onboarding",
+        "bookerId": 3,
+        "id": 1
+    },
+    {
+        "session": "Morning",
+        "date": "2024-09-24",
+        "bookableId": 1,
+        "title": "Movie Pitch!",
+        "bookerId": 2,
+        "id": 3
+    },
+    {
+        "session": "Evening",
+        "date": "2024-09-25",
+        "bookableId": 1,
+        "title": "Meeting Room",
+        "bookerId": 2,
+        "id": 4
+    },
+    {
+        "session": "Lunch",
+        "date": "2024-09-26",
+        "bookableId": 1,
+        "title": "New Employee Intro",
+        "bookerId": 1,
+        "id": 7
+    },
+    {
+        "session": "Afternoon",
+        "date": "2024-09-23",
+        "bookableId": 1,
+        "title": "Project Update",
+        "bookerId": 1,
+        "id": 8
+    },
+]
+
+const trans = transformBookings(bookingArray);
+console.log("-",trans)
+
+
+
+//기존 예약에 대한 조회 : sessionName과 날짜로 전달하면 bookings 객체로 변환한다.
+//bookings["Morning"]["2024-09-24"] 를 조회하기
+
 /*
-reduce(bookings, booking) => bookingsArray 배열 각 요소들 booking 객체의 값을 
-Grid 컴포넌트에 표시할 수 있는 객체로 변환하는 함수 실행 후 순서대로 bookings 객체에 누적시킨다.
-//======배열의 reduce 메소드 ========
 const array1 = [1, 2, 3, 4];
 
 // 0 + 1 + 2 + 3 + 4
@@ -60,5 +133,5 @@ const sumWithInitial = array1.reduce(
   (accumulator, currentValue) => accumulator + currentValue,
   initialValue,
 );
- */
 
+* */

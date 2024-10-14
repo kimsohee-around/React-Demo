@@ -1,18 +1,18 @@
-import './App.css'
+import '../App.css'
 import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
 import {FaCalendarAlt, FaDoorOpen, FaUsers} from "react-icons/fa";
-import UserPicker from "./component/Users/UserPicker.jsx";
-import BookingsPage from "./component/Bookings/BookingsPage.jsx";
-import BookablePage from "./component/Bookables/BookablePage.jsx";
-import UsersPage from "./component/Users/UsersPage.jsx";
+import UserPicker from "./Users/UserPicker.jsx";
+import BookingsPage from "./Bookings/BookingsPage.jsx";
+import BookablePage from "./Bookables/BookablePage.jsx";
+import UsersPage from "./Users/UsersPage.jsx";
 import {useState} from "react";
-import UserContext from "./component/Users/UserContext.js";
+import UserContext from "./Users/UserContext.js";
 import {QueryClient, QueryClientProvider} from "react-query";
 
+const queryClient = new QueryClient()
 function App() {
   const [user, setUser] = useState()
   console.log('-App user -',user)
-  const queryClient = new QueryClient()
 
   return (
     <QueryClientProvider client={queryClient} >

@@ -4,7 +4,7 @@ export function addDays(date , daysToAdd){
     return someday;
 }
 
-export default function getWeek(forDate, daysOffset=0){
+export function getWeek(forDate, daysOffset=0){
     const date = addDays(forDate,daysOffset)
     const day = date.getDay()   //요일. 일요일 0 부터 시작. 화요일은 2
     return {

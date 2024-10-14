@@ -11,7 +11,6 @@ export default function BookingForm ({booking, bookable, onSave, onDelete}) {
     }, [booking]);
 
     function handleChange (e) {
-        // title, notes 입력에 대한 처리 입니다.
         setState({
             ...state,
             [e.target.name]: e.target.value
