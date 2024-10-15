@@ -23,22 +23,33 @@ export default function UserSettingPage(){
     function handleIconClick(){
         document.getElementById('fileInput').click()
     }
-
-    function handleChange(){
-
+    // 입력값으로 state 변경하기
+    function handleChange(e){
+        setState({...state,[e.target.name]: e.target.value})
     }
 
-    function handleFileChange(){
-
+    // 파일 선택을 하면 profileImage 상태값 변경하기
+    function handleFileChange(e){
+        const file = e.target.files[0]
+        if(file && file.type.startsWith('image/')){
+            // img 태그의 src 를 변경. src는 URL
+            // 선택한 파일객체에 대해 URL 을 생성해 줍니다.(파일업로드 아니고 미리보기)
+            const imageUrl = URL.createObjectURL(file)
+            setProfileImage(imageUrl)
+            setState({...state, img:file.name})   //사용자 정보 변경을 위해 파일명 업데이트
+        }else{
+            alert('이미지 파일만 선택할 수 있습니다.')
+        }
     }
 
     function onSave(item){
 
     }
 
-    return(
+    console.log("handleFileChange state",state)
+    return user && (
         <>
-            <div className="ite user item-form" style={{
+            <div className="item user item-form" style={{
                 backgroundColor: "burlywood"
                 , paddingTop: "5%"
             }}>
