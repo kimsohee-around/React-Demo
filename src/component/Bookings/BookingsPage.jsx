@@ -11,8 +11,7 @@ export default function BookingsPage () {
 
     const {data: bookables = [], status, error} = useQuery(
         "bookables",
-        () => loadData("http://localhost:3001/bookables"),
-        {suspense: true}
+        () => loadData("http://localhost:3001/bookables")
     );
 
     const [searchParam] = useSearchParams()
@@ -26,6 +25,8 @@ export default function BookingsPage () {
     function getUrl(id){
         return `/bookings?bookableId=${id}`
     }
+
+
     return (
         <main className="bookings-page">
             <BookablesList
