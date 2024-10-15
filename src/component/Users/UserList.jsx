@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import PageSpinner from "../UI/PageSpinner.jsx";
-import UserContext from "./UserContext.js";
+import UserContext from "./UserContext.jsx";
 import useFetch from "../utils/useFetch.js";
 import {useQuery, useQueryClient} from "react-query";
 import loadData from "../utils/api.js";

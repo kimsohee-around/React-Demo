@@ -1,5 +1,5 @@
 import {useContext, useEffect} from "react";
-import UserContext from "./UserContext.js";
+import UserContext from "./UserContext.jsx";
 import {useQueryClient} from "react-query";
 
 export default function UserDetails () {

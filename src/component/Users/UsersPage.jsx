@@ -2,7 +2,7 @@ import UsersList from "./UserList.jsx";
 import {useContext, useState} from "react";
 import UserDetails from "./UserDetails.jsx";
 import {useQueryClient} from "react-query";
-import UserContext from "./UserContext.js";
+import UserContext from "./UserContext.jsx";
 
 
 function UsersPage () {

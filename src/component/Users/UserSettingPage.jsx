@@ -1,6 +1,6 @@
 import {FaCloudUploadAlt, FaDoorClosed} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
-import UserContext from "./UserContext.js";
+import UserContext from "./UserContext.jsx";
 import {useContext, useEffect, useState} from "react";
 import {useMutation, useQueryClient} from "react-query";
 import {editItem} from "../utils/api.js";
@@ -9,10 +9,11 @@ export default function UserSettingPage(){
     const navigate = useNavigate()
     // 현재 선택된 user 정보를 가져오기
     const {user,setUser} = useContext(UserContext)
-    const [state, setState] = useState()
+    const [state, setState] = useState({})
     const [profileImage,setProfileImage] = useState()
     const [selectedFile, setSelectedFile] = useState()
     const [message,setMessage] = useState()
+    const {title="",name="",notes=""} = state
 
     useEffect(() => {
         if(user){
@@ -53,10 +54,10 @@ export default function UserSettingPage(){
         }
     }
 
-    function onSave(item){
+    async function onSave(item){
         updateUser(item)
         executeFileUpload()
-
+        await setUser(item)
     }
 
     // 지금은 데이터 전송을 json-server 로 하는데 이것은 파일업로드를 처리할 수 없으므로 각각 테스트 합니다.
@@ -108,7 +109,7 @@ export default function UserSettingPage(){
                     <input
                         type="text"
                         name="name"
-                        value={state?.name}
+                        value={name}
                         onChange={handleChange}
                     />
                 </p>
@@ -118,7 +119,7 @@ export default function UserSettingPage(){
                     <input
                         type="text"
                         name="title"
-                        value={state?.title}
+                        value={title}
                         onChange={handleChange}
                     />
                 </p>
@@ -128,7 +129,7 @@ export default function UserSettingPage(){
                       name="notes"
                       rows={6}
                       cols={30}
-                      value={state?.notes}
+                      value={notes}
                       onChange={handleChange}
                   />
                 </p>
