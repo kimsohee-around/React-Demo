@@ -18,6 +18,7 @@ function UserList (){
     )
 
     useEffect(() => {
+        if(!user)
         setUser(users[0])
     }, [users,setUser]);
 

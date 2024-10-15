@@ -1,4 +1,4 @@
-import {useContext} from "react";
+import {useContext, useEffect} from "react";
 import UserContext from "./UserContext.js";
 import {useQueryClient} from "react-query";
 
@@ -11,7 +11,12 @@ export default function UserDetails () {
     const queryClient = useQueryClient()
     const users = queryClient.getQueryData("users")
     // users 목록 중에 현재 user.id 와 같은 것으로 user state 변경.
-    setUser(users?.find(u => u.id === user.id))
+
+    useEffect(() => {
+        if(users)
+        setUser(users.find(u => u.id === user.id))
+
+    }, [users]);
 
     return user ? (
         <div className="item user">
