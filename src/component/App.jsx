@@ -5,19 +5,15 @@ import UserPicker from "./Users/UserPicker.jsx";
 import BookingsPage from "./Bookings/BookingsPage.jsx";
 import BookablePage from "./Bookables/BookablePage.jsx";
 import UsersPage from "./Users/UsersPage.jsx";
-import {useState} from "react";
-import UserContext from "./Users/UserContext.js";
+import {UserProvider} from "./Users/UserContext.jsx";
 import {QueryClient, QueryClientProvider} from "react-query";
 import UserSettingPage from "./Users/UserSettingPage.jsx";
 
-const queryClient = new QueryClient()
 function App() {
-  const [user, setUser] = useState()
-  console.log('-App user -',user)
-
+  const queryClient = new QueryClient()
   return (
     <QueryClientProvider client={queryClient} >
-    <UserContext.Provider value={{user,setUser}}>
+    <UserProvider>
     <BrowserRouter>
         <div className="App">
             <header>
@@ -62,7 +58,7 @@ function App() {
 
         </div>
     </BrowserRouter>
-    </UserContext.Provider>
+    </UserProvider>
     </QueryClientProvider>
   )
 }

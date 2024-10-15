@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import {FaEdit, FaPlus} from "react-icons/fa"
 import Booking from "./Booking.jsx";
-import UserContext from "../Users/UserContext.js";
+import UserContext from "../Users/UserContext.jsx";
 import {Link} from "react-router-dom";
 import {useCreateBooking, useDeleteBooking, useUpdateBooking} from "./bookingHooks.js";
 import BookingForm from "./BookingForm.jsx";
@@ -15,7 +15,7 @@ export default function BookingDetails ({week,booking, bookable}) {
     //db.json 에서 user.id 는 문자열
     const isBooker = booking && user && (booking.bookerId === user.id)
 
-    const key = ["bookings", bookable.id,formatDate(week.start),formatDate(week.end)]
+    const key = ["bookings", bookable?.id,formatDate(week.start),formatDate(week.end)]
     const {createBooking, isCreating} = useCreateBooking(key)
     const {updateBooking, isUpdating} = useUpdateBooking(key)
     const {deleteBooking, isDeleting} = useDeleteBooking(key)
