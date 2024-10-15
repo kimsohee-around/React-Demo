@@ -1,10 +1,13 @@
 import {useContext} from "react";
 import UserContext from "./UserContext.js";
+import {useQueryClient} from "react-query";
+import {useSearchParams} from "react-router-dom";
 
 export default function UserDetails () {
 
     // console.log("--UserDetails--",user)
-    const {user} = useContext(UserContext)
+    const {user,setUser} = useContext(UserContext)
+
 
     return user ? (
         <div className="item user">

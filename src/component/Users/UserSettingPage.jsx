@@ -3,6 +3,8 @@ import {useNavigate} from "react-router-dom";
 import userContext from "./UserContext.js";
 import UserContext from "./UserContext.js";
 import {useContext, useEffect, useState} from "react";
+import {useMutation, useQueryClient} from "react-query";
+import {editItem} from "../utils/api.js";
 
 export default function UserSettingPage(){
     const navigate = useNavigate()
@@ -10,6 +12,8 @@ export default function UserSettingPage(){
     const {user} = useContext(UserContext)
     const [state, setState] = useState()
     const [profileImage,setProfileImage] = useState()
+    const [selectedFile, setSelectedFile] = useState()
+    const [message,setMessage] = useState()
 
     useEffect(() => {
         if(user){
@@ -18,6 +22,9 @@ export default function UserSettingPage(){
             setState(user)
         }
     }, [user]);
+
+    const key="users"
+    const {updateUser, status} = useUpdateUser(key)
 
     //파일 대화상자 보이기
     function handleIconClick(){
@@ -37,13 +44,45 @@ export default function UserSettingPage(){
             const imageUrl = URL.createObjectURL(file)
             setProfileImage(imageUrl)
             setState({...state, img:file.name})   //사용자 정보 변경을 위해 파일명 업데이트
+            //
+            setSelectedFile(file)       // 실제로 파일 업로드를 위한 state
         }else{
             alert('이미지 파일만 선택할 수 있습니다.')
+            setSelectedFile(null)
         }
     }
 
     function onSave(item){
+        updateUser(item)
+        executeFileUpload()
+    }
 
+    // 지금은 데이터 전송을 json-server 로 하는데 이것은 파일업로드를 처리할 수 없으므로 각각 테스트 합니다.
+// 프로젝트에서는 booking, bookable, user 모두 스프링부트에서 서버를 구현하고, updateUser 에서 다른 값과 함께 formData 를 전송하도록
+// 구현해야 합니다. useUpdateUser mutation 함수가 editItem 이 아니라 executeFileUpload 함수가 되어야 합니다.
+    function executeFileUpload () {
+        if (!selectedFile) {    // selectedFile은 input type="file" 요소 객체
+            return;
+        }
+
+        // FormData 객체 생성 : 파일업로드 할때 필요. (여기서는 파일만 보내지만, 텍스트도 같이 보낼 수 있습니다.
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+        // 텍스트 input 이 있으면 formData.append 로 값을 저장합니다.
+
+        fetch("http://localhost:8080/reactApp",{
+            method: "POST",
+            body: formData     // body 가 json 이 아니고 formData
+        }).then(
+            response => {
+                if(response.ok)
+                    return response.json()
+            }
+        ).then(
+            data => setMessage(data.message)
+        ).catch(error=>{
+            console.log(error)
+        })
     }
 
     console.log("handleFileChange state",state)
@@ -110,6 +149,29 @@ export default function UserSettingPage(){
             </p>
         </>
     )
+}  //  컴포넌트 끝
+
+// 파일업로드 formData 객체로 전송해야 합니다.
+// 텍스트값만 업데이트 : -> 실제로 스프링부트에서 구현할 때에는 editItem 이 변경되어야 합니다.
+function useUpdateUser (key) {
+    const queryClient = useQueryClient();
+    const mutation = useMutation(
+        item => editItem(`http://localhost:3001/users/${item.id}`, item),
+        {
+            onSuccess: (user) => {
+                queryClient.invalidateQueries(key);
+                const users = queryClient.getQueryData(key) || [];
+                const userIndex = users.findIndex(b => b.id === user.id);
+                users[userIndex] = user;
+                queryClient.setQueryData(key, users);
+            }
+        }
+    );
+
+    return {
+        updateUser: mutation.mutate,
+        status: mutation.status
+    };
 }
 
 const styles = {

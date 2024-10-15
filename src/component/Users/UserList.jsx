@@ -2,8 +2,9 @@ import {useContext, useEffect, useState} from "react";
 import PageSpinner from "../UI/PageSpinner.jsx";
 import UserContext from "./UserContext.js";
 import useFetch from "../utils/useFetch.js";
-import {useQuery} from "react-query";
+import {useQuery, useQueryClient} from "react-query";
 import loadData from "../utils/api.js";
+import {useSearchParams} from "react-router-dom";
 
 // 형제 컴포넌트 UserDetails 와 공유해야 합니다.
 function UserList (){
@@ -19,6 +20,7 @@ function UserList (){
     useEffect(() => {
         setUser(users[0])
     }, [users,setUser]);
+
 
     if(status === "error") {
         return <div>오류 : {error}</div>
