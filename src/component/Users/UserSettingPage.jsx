@@ -1,6 +1,5 @@
 import {FaCloudUploadAlt, FaDoorClosed} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
-import userContext from "./UserContext.js";
 import UserContext from "./UserContext.js";
 import {useContext, useEffect, useState} from "react";
 import {useMutation, useQueryClient} from "react-query";
@@ -9,7 +8,7 @@ import {editItem} from "../utils/api.js";
 export default function UserSettingPage(){
     const navigate = useNavigate()
     // 현재 선택된 user 정보를 가져오기
-    const {user} = useContext(UserContext)
+    const {user,setUser} = useContext(UserContext)
     const [state, setState] = useState()
     const [profileImage,setProfileImage] = useState()
     const [selectedFile, setSelectedFile] = useState()
@@ -20,11 +19,13 @@ export default function UserSettingPage(){
             // 이미지 초기값 설정
             setProfileImage(`http://localhost:8080/upload/${user.img}`)
             setState(user)
+            setMessage(null)
         }
     }, [user]);
 
+
     const key="users"
-    const {updateUser, status} = useUpdateUser(key)
+    const {updateUser, isSuccess} = useUpdateUser(key)
 
     //파일 대화상자 보이기
     function handleIconClick(){
@@ -55,6 +56,7 @@ export default function UserSettingPage(){
     function onSave(item){
         updateUser(item)
         executeFileUpload()
+
     }
 
     // 지금은 데이터 전송을 json-server 로 하는데 이것은 파일업로드를 처리할 수 없으므로 각각 테스트 합니다.
@@ -92,7 +94,7 @@ export default function UserSettingPage(){
                 backgroundColor: "burlywood"
                 , paddingTop: "5%"
             }}>
-
+                {message && <p>{message}</p>}
                 <div style={styles.imageContainer}>
                     <img src={profileImage} alt={user?.name} style={styles.profileImage}/>
                     <div style={styles.cameraIcon} onClick={handleIconClick}>
@@ -134,7 +136,7 @@ export default function UserSettingPage(){
             <p className="controls">
                 <button
                         className="btn"
-                        onClick={() => navigate(`/users?id=${user.id}`)}
+                        onClick={() => navigate(`/users`)}
                     >
                         <FaDoorClosed/>
                         <span>Close</span>
@@ -164,6 +166,7 @@ function useUpdateUser (key) {
                 const userIndex = users.findIndex(b => b.id === user.id);
                 users[userIndex] = user;
                 queryClient.setQueryData(key, users);
+                alert("수정되었습니다.!")
             }
         }
     );
