@@ -13,7 +13,7 @@ export default function BookingDetails ({week,booking, bookable}) {
     const [isEditing, setEditing] = useState(false)
 
     //db.json 에서 user.id 는 문자열
-    const isBooker = booking && (booking.bookerId === user.id)
+    const isBooker = booking && user && (booking.bookerId === user.id)
 
     const key = ["bookings", bookable.id,formatDate(week.start),formatDate(week.end)]
     const {createBooking, isCreating} = useCreateBooking(key)
