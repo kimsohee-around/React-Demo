@@ -13,7 +13,7 @@ export default function loadData(url){
 export function getBookings(bookableId, startDate, endDate){
     const start = formatDate(startDate)
     const end = formatDate(endDate)
-    const urlRoot = "http://localhost:3001/bookings";
+    const urlRoot = "http://localhost:8080/bookings";
 
     const query = `bookableId=${bookableId}&start=${start}&end=${end}`
     return loadData(`${urlRoot}?&${query}`)

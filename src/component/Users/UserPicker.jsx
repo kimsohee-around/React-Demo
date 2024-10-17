@@ -14,7 +14,7 @@ export default function UserPicker(){
 
     const {data:users=[],status,error} = useQuery(
         "users",
-        ()=> loadData("http://localhost:3001/users")
+        ()=> loadData("http://localhost:8080/users")
     )
     console.log('status',status)
 
@@ -47,12 +47,12 @@ export default function UserPicker(){
         /*순서2) value 가 users 배열 0번 객체로 설정
         *    선택을 바꾸는 이벤트는 handleSelect 처리
         * */
-        <select
+       users && ( <select
             className="user-picker"
-            onChange={handleSelect} value={user?.id}>   
+            onChange={handleSelect} value={user?.id}>
             {users.map(u =>
                 <option key={u.id} value={u.id}>{u.name}</option>
             )}
-        </select>
+        </select>)
     );
 }

@@ -14,7 +14,7 @@ function UserList (){
 
     const {data:users=[],status,error} = useQuery(
         "users",
-        ()=> loadData("http://localhost:3001/users")
+        ()=> loadData("http://localhost:8080/users")
     )
 
     useEffect(() => {

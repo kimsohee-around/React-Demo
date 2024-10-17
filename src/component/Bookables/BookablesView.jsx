@@ -13,7 +13,7 @@ export default function BookablesView () {
     // status,error 추가적인 실행 상태 정보도 전달. => 카톡 그림 참고
     const {data: bookables = [], status, error} = useQuery(
         "bookables",
-        ()=> loadData("http://localhost:3001/bookables")
+        ()=> loadData("http://localhost:8080/bookables")
     );
     //첫번째 인자는 브라우저에 저장된 cache 를 가져오기 key (문자열,배열,객체) 직렬화 가능한 타입
     //두번째 인자는 비동기 함수

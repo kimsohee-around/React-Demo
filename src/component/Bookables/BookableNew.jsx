@@ -12,7 +12,7 @@ export default function BookableNew(){
     //createBookable : 상태 변경함수를 리턴 받아서 할당.
     const {mutate:createBookable, status,error} = useMutation(
         /* createBookable 이 실행할 인자값과 실행할 비동기 함수*/
-        item =>createItem("http://localhost:3001/bookables",item),
+        item =>createItem("http://localhost:8080/bookables",item),
         {
             // 비동기 함수 처리가 성공하면 실행되는 함수를 정의
             onSuccess: bookable =>{         // bookable 은 방금 추가된 데이터

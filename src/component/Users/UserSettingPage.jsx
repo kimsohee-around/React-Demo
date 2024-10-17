@@ -73,7 +73,7 @@ export default function UserSettingPage(){
         formData.append("file", selectedFile);
         // 텍스트 input 이 있으면 formData.append 로 값을 저장합니다.
 
-        fetch("http://localhost:8080/reactApp",{
+        fetch("http://localhost:8080/profile",{
             method: "POST",
             body: formData     // body 가 json 이 아니고 formData
         }).then(
@@ -159,7 +159,7 @@ export default function UserSettingPage(){
 function useUpdateUser (key) {
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        item => editItem(`http://localhost:3001/users/${item.id}`, item),
+        item => editItem(`http://localhost:8080/users/${item.id}`, item),
         {
             onSuccess: (user) => {
                 queryClient.invalidateQueries(key);

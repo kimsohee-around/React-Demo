@@ -13,7 +13,7 @@ export default function BookableEdit(){
     // 하나의 예약 자원을 fetch 합니다. -> key 값이 문자열,id 정수값 요소를 갖는 배열
     const {data, status,isLoading} = useQuery(
         ["bookable",id],
-        () => loadData(`http://localhost:3001/bookables/${id}`),
+        () => loadData(`http://localhost:8080/bookables/${id}`),
         {
             initialData:
             queryClient.getQueriesData("bookables")?.find(
@@ -40,7 +40,7 @@ export default function BookableEdit(){
 
     // url 변경하는 네비게이트 함수를 리턴받는다.
     function handleSubmit(){
-        const result = editItem(`http://localhost:3001/bookables/${id}`,state)
+        const result = editItem(`http://localhost:8080/bookables/${id}`,state)
         navigate(`/bookables/${id}`)
     }
 
@@ -68,7 +68,7 @@ function useDeleteBookable () {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        bookable => deleteItem(`http://localhost:3001/bookables/${bookable.id}`),
+        bookable => deleteItem(`http://localhost:8080/bookables/${bookable.id}`),
         {
             // onSuccess : 첫번째 인자는 서버에서 보낸 응답. 두번째 인자는 실행함수로 보낸 데이터
             onSuccess: (response, bookable) => {
