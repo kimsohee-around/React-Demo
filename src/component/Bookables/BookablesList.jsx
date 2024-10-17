@@ -17,8 +17,8 @@ export default function BookablesList ({bookable, bookables,getUrl}) {
             b => b.group === e.target.value
         );
         // setBookable(bookablesInSelectedGroup[0]);
-        // navigate(getUrl(bookablesInSelectedGroup[0].id));
-        navigate(`/bookables/${bookablesInSelectedGroup[0].id}`);
+        navigate(getUrl(bookablesInSelectedGroup[0].id));   //상위 컴포넌트에서 url 변경하도록 메소드 실행
+        // navigate(`/bookables/${bookablesInSelectedGroup[0].id}`);  // 이렇게 하면 동작 오류
         // 단순히 상태값을 바꾸는 것이 아니고 새로운 url 로 요청을 보낸다.
     }
 

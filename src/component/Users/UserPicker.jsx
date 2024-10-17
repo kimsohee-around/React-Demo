@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import Spinner from "../UI/Spinner.jsx";
-import UserContext from "./UserContext.js";
+import UserContext from "./UserContext.jsx";
 import useFetch from "../utils/useFetch.js";
 import {useQuery} from "react-query";
 import loadData from "../utils/api.js";
@@ -19,8 +19,9 @@ export default function UserPicker(){
     console.log('status',status)
 
     useEffect(() => {
-        setUser(users[0])
-    }, []);
+        if(users)
+            setUser(users[0])
+    }, [users]);
 
     if(status === "loading"){
         return <Spinner/>

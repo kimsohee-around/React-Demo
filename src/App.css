@@ -419,7 +419,7 @@ header .icon-loading {
 }
 
 .item-form {
-  width:100%;
+  /*width:100%;*/
 }
 
 .item-form input[type=text] {
@@ -432,7 +432,7 @@ header .icon-loading {
 .item-form textarea {
   font-size: 100%;
   padding:0.5em 1em;
-  width:80%;
+  width:85%;
   max-width:60em;
   margin-bottom: 1em;
 }
@@ -440,4 +440,71 @@ header .icon-loading {
 .item-form label.field {
   display: block;
   margin:1em 0 3px;
+}
+
+.user {
+  position: relative;
+  padding-left: 170px;
+}
+.user .item-header {
+  padding-left: 170px;
+  margin-left: -170px;
+}
+.user .user-avatar img {
+  border: 8px solid white;
+  border-radius: 50%;
+  position: absolute;
+  top:1em;
+  left:1em;
+  background: white;
+  width:120px;
+  height:120px;
+}
+
+
+.user-pending {
+  opacity: 0.6;
+}
+
+@keyframes fadein {
+  100% {
+    opacity: 1;
+  }
+}
+
+.users .icon-loading {
+  opacity: 0;
+  font-size: 80%;
+  margin: 0 1em;
+}
+
+.users .selected .icon-loading {
+  animation: fadein 800ms forwards 300ms, spin 1.5s infinite;
+}
+
+.user-bookings {
+  margin: 1.5rem 1rem 1rem -1px;
+}
+.user-bookings table {
+  width:100%;
+}
+.user-bookings th {
+  background: var(--primary);
+  color: var(--light-text);
+  width:25%;
+  padding:8px;
+}
+.user-bookings td {
+  border-bottom: 1px dotted silver;
+  padding:8px;
+  background: var(--light-text);
+  color: var(--dark-text);
+  width:25%;
+}
+.user-bookings a {
+  display: block;
+  text-decoration: none;
+}
+.user-bookings a:hover {
+  text-decoration: underline;
 }

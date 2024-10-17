@@ -1,47 +1,74 @@
-import {useContext} from "react";
-import UserContext from "../Users/UserContext.js";
-import {FaEdit} from "react-icons/fa";
+import {useContext, useEffect, useState} from "react";
+import {FaEdit, FaPlus} from "react-icons/fa"
+import Booking from "./Booking.jsx";
+import UserContext from "../Users/UserContext.jsx";
+import {Link} from "react-router-dom";
+import {useCreateBooking, useDeleteBooking, useUpdateBooking} from "./bookingHooks.js";
+import BookingForm from "./BookingForm.jsx";
 import {formatDate} from "../utils/date-utils.js";
 
-export default function BookingDetails({booking, bookable}){
-    // 현재 picker 선택한 사용자 가져오기
+export default function BookingDetails ({week,booking, bookable}) {
+    // 공유된 UserContext 가져오기. userContext 객체에서 user 프로퍼티만 가져오기
     const {user, setUser} = useContext(UserContext)
-    // 현재 picker 선택한 사용자와 예약자가 같은지 판단
-    const isBooker = booking && user &&
-        (booking.bookerId === parseInt(user.id,10))
-    //booking 객체 구조 분해하여 변수 설정. Grid 에서 칸 한개를 클릭해야
-    // booking 객체가 만들어집니다. -> undefined 값은 구조 분해 오류
-    // const {title="", date="", session="", notes=""} = booking
+    const [isEditing, setEditing] = useState(false)
+
+    //db.json 에서 user.id 는 문자열
+    const isBooker = booking && user && (booking.bookerId === user.id)
+
+    const key = ["bookings", bookable?.id,formatDate(week.start),formatDate(week.end)]
+    const {createBooking, isCreating} = useCreateBooking(key)
+    const {updateBooking, isUpdating} = useUpdateBooking(key)
+    const {deleteBooking, isDeleting} = useDeleteBooking(key)
+
+    useEffect(() => {
+        setEditing(booking && booking.id === undefined)
+    }, [booking]);
+
+    function handleSave(item){
+        setEditing(false)
+        if(item.id===undefined){
+            createBooking({...item, bookerId:user.id})
+        }else{
+            updateBooking(item)
+        }
+    }
+
+    function handleDelete(item){
+        if(window.confirm("예약을 취소하시겠습니까?")){
+            setEditing(false)
+            deleteBooking(item.id)
+        }
+    }
     return (
         <div className="booking-details">
-            <h2>예약 상세보기
-                {isBooker && (<span className="constrols">
-                        <button className="btn">
-                            <FaEdit/>
-                        </button>
-                </span> )}
+            <h2>Booking Details
+                {isBooker && (<span className="controls">
+                            <button className="btn"
+                            onClick={()=>setEditing(v=>!v)}
+                            ><FaEdit/></button>
+                            </span>)}
             </h2>
-            {booking ? (
+            {isCreating || isUpdating || isDeleting ? (
                 <div className="booking-details-fields">
-                  <label>Title</label>
-                  <p>{booking.title}</p>
-                  <label>예약자원</label>
-                  <p>{bookable.title}</p>  {/*bookerbleId 값만 booking 에 저장.*/}
-                  <label>예약 날짜</label>
-                  <p>{formatDate(new Date(booking.date))}</p>
-                  <label>Session</label>
-                  <p>{booking.session}</p>
-                    {booking.notes && (
-                        <>
-                        <label>Notes</label>
-                        <p>{booking.notes}</p>
-                        </>
-                    )}
+                    <p>Saving...</p>
                 </div>
-            ):
-                (<div className="booking-details-fields">
-                        Select a booking or a booking slot.
-                </div>)}
-            </div>
-        )
-    }
+            ) : isEditing ? (
+                <BookingForm
+                    booking={booking}
+                    bookable={bookable}
+                    onSave={handleSave}
+                    onDelete={handleDelete}
+                />
+            ) : booking ? (
+                <Booking
+                    booking={booking}
+                    bookable={bookable}
+                />
+            ) : (
+                <div className="booking-details-fields">
+                    <p>Select a booking or a booking slot.</p>
+                </div>
+            )}
+        </div>
+    );
+}

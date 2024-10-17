@@ -2,7 +2,7 @@ import {FaSpinner} from "react-icons/fa";
 
 function Spinner() {
     return (
-        <span>
+    <span>
       <FaSpinner className="icon-loading"/>
     </span>
     );

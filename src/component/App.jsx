@@ -1,22 +1,19 @@
-import './App.css'
+import '../App.css'
 import {BrowserRouter, Link, Route, Routes} from "react-router-dom";
-import {FaCalendarAlt, FaDoorOpen, FaUsers} from "react-icons/fa";
-import UserPicker from "./component/Users/UserPicker.jsx";
-import BookingsPage from "./component/Bookings/BookingsPage.jsx";
-import BookablePage from "./component/Bookables/BookablePage.jsx";
-import UsersPage from "./component/Users/UsersPage.jsx";
-import {useState} from "react";
-import UserContext from "./component/Users/UserContext.js";
+import {FaCalendarAlt, FaDoorOpen, FaUserCog, FaUsers} from "react-icons/fa";
+import UserPicker from "./Users/UserPicker.jsx";
+import BookingsPage from "./Bookings/BookingsPage.jsx";
+import BookablePage from "./Bookables/BookablePage.jsx";
+import UsersPage from "./Users/UsersPage.jsx";
+import {UserProvider} from "./Users/UserContext.jsx";
 import {QueryClient, QueryClientProvider} from "react-query";
+import UserSettingPage from "./Users/UserSettingPage.jsx";
 
 function App() {
-  const [user, setUser] = useState()
-  console.log('-App user -',user)
   const queryClient = new QueryClient()
-
   return (
     <QueryClientProvider client={queryClient} >
-    <UserContext.Provider value={{user,setUser}}>
+    <UserProvider>
     <BrowserRouter>
         <div className="App">
             <header>
@@ -42,7 +39,12 @@ function App() {
                         </li>
                     </ul>
                 </nav>
-                <UserPicker/>
+                <nav>
+                    <UserPicker/>
+                    <Link to="/settings" className="btn">
+                        <FaUserCog/>
+                    </Link>
+                </nav>
             </header>
 
         <Routes>
@@ -51,11 +53,12 @@ function App() {
                 세부적인 처리는 BookablePage 에서 정의*/}
             <Route path="/bookables/*" element={<BookablePage/>}/>
             <Route path="/users" element={<UsersPage/>}/>
+            <Route path="/settings" element={<UserSettingPage />} />
         </Routes>
 
         </div>
     </BrowserRouter>
-    </UserContext.Provider>
+    </UserProvider>
     </QueryClientProvider>
   )
 }
