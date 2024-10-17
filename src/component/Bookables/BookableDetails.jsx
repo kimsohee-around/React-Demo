@@ -5,7 +5,7 @@ import {FaEdit} from "react-icons/fa";
 
 // (bookables 는 전체 목록) bookable 은  목록 중에 선택한 하나의 객체를 컴포넌트 프롭으로 받음.
 //자식 컴포넌트에서 부모컴포넌트가 전달한 state 변수를 props 로 받음.
-export default function BookableDetails ({bookable}) {
+export default function BookableDetails ({bookable,auth}) {
     const [hasDetails, setHasDetails] = useState(true);
 
     function toggleDetails () {
@@ -18,21 +18,21 @@ export default function BookableDetails ({bookable}) {
             <div className="item-header">
                 <h2>{bookable.title}</h2>
                 <span className="controls">
-          <label>
-            <input
-                type="checkbox"
-                onChange={toggleDetails}
-                checked={hasDetails}
-            />
-            Show Details
-          </label>
-                    {/*글 수정 화면 전환 링크*/}
-          <Link to={`/bookables/${bookable.id}/edit`}
-                 className="btn btn-header">
-              <FaEdit/><span>Edit</span>
-          </Link>
+                  <label>
+                    <input
+                        type="checkbox"
+                        onChange={toggleDetails}
+                        checked={hasDetails}
+                    />
+                    Show Details
+                  </label>
+                            {/*글 수정 화면 전환 링크*/}
+                            {auth && <Link to={`/bookables/${bookable.id}/edit`}
+                                   className="btn btn-header">
+                                   <FaEdit/><span>Edit</span>
+                            </Link>}
 
-        </span>
+                </span>
             </div>
 
             <p>{bookable.notes}</p>

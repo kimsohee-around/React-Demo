@@ -7,7 +7,7 @@ import PageSpinner from "../UI/PageSpinner.jsx";
 import {useQuery} from "react-query";
 import loadData from "../utils/api.js";
 
-export default function BookablesView () {
+export default function BookablesView ({auth}) {
 
     //useQuery 의 리턴은 fetch 결과는 data 프로퍼티에 저장. 프로퍼티값은 bookables 에 저장
     // status,error 추가적인 실행 상태 정보도 전달. => 카톡 그림 참고
@@ -46,7 +46,7 @@ export default function BookablesView () {
                 getUrl={id => `/bookables/${id}`}
             />
 
-            <p className="controls">
+            {auth && <p className="controls">
                 <Link
                     to="/bookables/new"
                     replace={true}
@@ -54,10 +54,10 @@ export default function BookablesView () {
                     <FaPlus/>
                     <span>New</span>
                 </Link>
-            </p>
+            </p>}
         </div>
 
-        <BookableDetails bookable={bookable}/>
+        <BookableDetails bookable={bookable} auth={auth}/>
     </main>
     );
     //bookable state 상태 변화는 자식 컴포넌트에서 발생하고

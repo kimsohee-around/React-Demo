@@ -6,14 +6,32 @@ export default function useFetch(url){
     const [error, setError] = useState(null)
     const [status, setStatus] = useState("idle")
 
+    let headers = new Headers({
+/*
+        "Content-Type": "application/json",
+*/
+    })
+
+    const accessToken = localStorage.getItem("ACCESS_TOKEN")
+    if(accessToken){
+        headers.append("Authorization","Bearer " + accessToken);
+    }
+
+    let options ={
+        headers: headers,
+        method: "GET"
+    };
+
     useEffect(() => {
+
+
         // 여러 컴포넌트와 공유하게 될 코드로 실행할 때마다 변수 reset
         let doUpdate = true
         setStatus("loading")
         setData(undefined)
         setError(null)
 
-        fetch(url)
+        fetch(url,options)
             .then(resp =>{
                 if(!resp.ok){
                     throw new Error("There was a problem fecthing data.")
