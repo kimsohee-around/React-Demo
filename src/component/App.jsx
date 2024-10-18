@@ -10,11 +10,16 @@ import {QueryClient, QueryClientProvider} from "react-query";
 import UserSettingPage from "./Users/UserSettingPage.jsx";
 import useFetch from "./utils/useFetch.js";
 import {useEffect, useState} from "react";
+import Login from "./Login.jsx";
+import Register from "./Register.jsx";
+import {call, signout} from "./utils/api-auth.js";
 
 const queryClient = new QueryClient()
-const AuthUser = function() { return (
+const AuthUser = function() {
+
+
+    return (
     <>
-        <UserProvider>
         <nav>
             <ul>
                 <li>
@@ -29,15 +34,21 @@ const AuthUser = function() { return (
                         <span>사용자</span>
                     </Link>
                 </li>
+                <UserPicker/>
+                <Link to="/settings" className="btn">
+                    <FaUserCog/>
+                </Link>
             </ul>
         </nav>
         <nav>
-            <UserPicker/>
-            <Link to="/settings" className="btn">
-                <FaUserCog/>
-            </Link>
+                <li>
+                    <Link to="/signout" >
+                        <button onClick={handleLogout} className="btn btn-header">
+                            <FaSign/><span>로그아웃</span>
+                        </button>
+                    </Link>
+                 </li>
         </nav>
-        </UserProvider>
     </>
 )}
 
@@ -46,12 +57,12 @@ const HOME = function () { return (
         <nav>
             <ul>
                 <li>
-                    <Link to="" className="btn btn-header">
+                    <Link to="/signin" className="btn btn-header">
                         <FaSign/><span>로그인</span>
                     </Link>
                 </li>
                 <li>
-                    <Link to="" className="btn header">
+                    <Link to="/signup" className="btn header">
                         <FaRegIdCard/><span>회원 가입</span>
                     </Link>
                 </li>
@@ -60,21 +71,27 @@ const HOME = function () { return (
     </>
 )}
 
+function handleLogout(){
+    signout()
+    setAuth(false)
+}
 
 function App() {
     const [auth , setAuth] = useState(false)
     const username = localStorage.getItem("USERNAME")
 
     useEffect(() => {
-        if(username) {
-            const {data,status,error} = useFetch(`http://localhost:8080/auth/${username}`)
-            data===username ? setAuth(true) : localStorage.clear()
-        }
-    }, [username]);
 
+         call(`/auth/init/${username}`,"GET",null)
+             .then(data => {
+                 setAuth(data)
+                 console.log('auth',auth)
+             })
+    }, [username]);
 
  return (
      <QueryClientProvider client={queryClient}>
+         <UserProvider>
                 <BrowserRouter>
                     <div className="App">
                         <header>
@@ -94,15 +111,26 @@ function App() {
                             {auth ? <AuthUser/> : <HOME/>}
                         </header>
 
+
+                        {auth ? (
                         <Routes>
-                            <Route path="/bookables/*" element={<BookablePage auth={auth}/>}/>
+                            <Route path="/" element={<BookablePage auth={auth}/>}/>
                             <Route path="/bookings" element={<BookingsPage/>}/>
                             <Route path="/users" element={<UsersPage/>}/>
                             <Route path="/settings" element={<UserSettingPage/>}/>
-                        </Routes>
+                        </Routes>):
+                            (
+                            <Routes>
+                            <Route path="/bookables/*" element={<BookablePage auth={auth}/>}/>
+                             <Route path="/signin" element={<Login/>}/>
+                             <Route path="/" element={<Login/>}/>
+                             <Route path="/signup" element={<Register />}/>
+                            </Routes>
+                            )}
 
                     </div>
                 </BrowserRouter>
+         </UserProvider>
      </QueryClientProvider>
     )
 }

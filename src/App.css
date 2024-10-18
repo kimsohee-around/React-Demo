@@ -508,3 +508,9 @@ header .icon-loading {
 .user-bookings a:hover {
   text-decoration: underline;
 }
+.item-form input[type=password] {
+  padding:0.5em 1em;
+  border-radius:1em;
+  border:none;
+  font-size:100%;
+}

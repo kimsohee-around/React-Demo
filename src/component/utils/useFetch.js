@@ -12,6 +12,7 @@ export default function useFetch(url){
 */
     })
 
+    //서버로 요청을 보낼 때 마다 토큰 인증값 헤더로 보내기
     const accessToken = localStorage.getItem("ACCESS_TOKEN")
     if(accessToken){
         headers.append("Authorization","Bearer " + accessToken);

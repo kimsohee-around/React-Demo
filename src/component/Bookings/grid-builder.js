@@ -70,8 +70,8 @@ const result = getGrid({
         6
     ]
 },new Date("2024-09-22"));
-console.log("result",result)
-console.log("test",result.grid.Breakfast)
+// console.log("result",result)
+// console.log("test",result.grid.Breakfast)
 
 const bookingArray = [
     {

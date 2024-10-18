@@ -8,6 +8,7 @@ export default function loadData(url){
             }
             return resp.json()
         })
+        .catch((error) => console.error(error.message))
 }
 
 export function getBookings(bookableId, startDate, endDate){
