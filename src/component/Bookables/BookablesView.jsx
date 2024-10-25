@@ -46,7 +46,7 @@ export default function BookablesView ({auth}) {
                 getUrl={id => `/bookables/${id}`}
             />
 
-            {auth && <p className="controls">
+            {auth ? <p className="controls">
                 <Link
                     to="/bookables/new"
                     replace={true}
@@ -54,7 +54,7 @@ export default function BookablesView ({auth}) {
                     <FaPlus/>
                     <span>New</span>
                 </Link>
-            </p>}
+            </p> : <spinner />}
         </div>
 
         <BookableDetails bookable={bookable} auth={auth}/>

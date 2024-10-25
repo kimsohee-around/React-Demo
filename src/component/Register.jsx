@@ -11,7 +11,7 @@ export default function Register () {
     useEffect(() => {
 
         if(exec) {
-            fetch(`http://localhost:8080/auth/is/${username}`)
+            fetch(`http://localhost:8080/checkout/${username}`)
                 .then((response) => {
                     return response.json()
                 })
@@ -65,7 +65,7 @@ export default function Register () {
 
     }
 
-    return auth || (
+    return (
         <div className="booking-details" style={{width: "600px", margin: "auto"}}>
             <h2 style={{backgroundColor: "burlywood",color:"brown",marginTop: "20%"}}>Register </h2>
                 <div className="booking-details-fields item-form"

@@ -27,10 +27,10 @@ export default function BookableDetails ({bookable,auth}) {
                     Show Details
                   </label>
                             {/*글 수정 화면 전환 링크*/}
-                            {auth && <Link to={`/bookables/${bookable.id}/edit`}
+                            {auth ? <Link to={`/bookables/${bookable.id}/edit`}
                                    className="btn btn-header">
                                    <FaEdit/><span>Edit</span>
-                            </Link>}
+                            </Link> : <spinner />}
 
                 </span>
             </div>

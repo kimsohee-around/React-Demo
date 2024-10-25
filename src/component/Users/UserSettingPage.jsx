@@ -67,13 +67,21 @@ export default function UserSettingPage(){
         if (!selectedFile) {    // selectedFile은 input type="file" 요소 객체
             return;
         }
+        let headers = new Headers({
+            "Content-Type": "application/json",
+        })
 
+        const accessToken = localStorage.getItem("ACCESS_TOKEN")
+        if(accessToken){
+            headers.append("Authorization","Bearer " + accessToken);
+        }
         // FormData 객체 생성 : 파일업로드 할때 필요. (여기서는 파일만 보내지만, 텍스트도 같이 보낼 수 있습니다.
         const formData = new FormData();
         formData.append("file", selectedFile);
         // 텍스트 input 이 있으면 formData.append 로 값을 저장합니다.
 
         fetch("http://localhost:8080/profile",{
+            headers: headers,
             method: "POST",
             body: formData     // body 가 json 이 아니고 formData
         }).then(

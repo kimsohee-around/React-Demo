@@ -24,7 +24,7 @@ export function call(api, method, request){
             return response.json();
         }
         else if(response.status === 403){
-            // window.location.href="/signin";  //redirect
+            window.location.href="/signin";  //redirect
         }else {
             // Promise.reject(response).then(r => {return response;} )
             throw new Error(response)
@@ -35,7 +35,7 @@ export function call(api, method, request){
 }
 export function signin(userDTO){
     //call 함수에서 fetch 실행합니다.
-    return call('/auth/signin','POST',userDTO)
+    return call('/signin','POST',userDTO)
         .then((response) => {
             // console.log("response:",response)
             // alert("로그인 토큰 : " + response.token)
@@ -58,7 +58,7 @@ export function signout(){
 }
 
 export function signup(userDTO){
-    return call("/auth/signup","POST",userDTO)
+    return call("/signup","POST",userDTO)
         .then((response)=>{
             window.location.href="/signin"
         });

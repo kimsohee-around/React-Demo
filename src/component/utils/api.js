@@ -1,7 +1,20 @@
 import {formatDate} from "./date-utils.js";
 
+let headers = new Headers({
+    "Content-Type": "application/json",
+})
+
+const accessToken = localStorage.getItem("ACCESS_TOKEN")
+if(accessToken){
+    headers.append("Authorization","Bearer " + accessToken);
+}
+
 export default function loadData(url){
-    return fetch(url)   //method: GET
+    let options ={
+        headers: headers,
+        method: "GET",
+    };
+    return fetch(url,options)   //method: GET
         .then(resp =>{
             if(!resp.ok){
                 throw new Error("There wa a problem fecthing data.")
@@ -25,7 +38,7 @@ export function createItem (url, item) {
         url,
         {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: {"Content-Type": "application/json","Authorization":"Bearer " + accessToken},
             body: JSON.stringify(item)
         }
     ).then(response => {
@@ -41,7 +54,7 @@ export function editItem (url, item) {
         url,
         {
             method: "PUT",
-            headers: {"Content-Type": "application/json"},
+            headers: {"Content-Type": "application/json","Authorization":"Bearer " + accessToken},
             body: JSON.stringify(item)
         }
     ).then(response => {
@@ -57,7 +70,7 @@ export function deleteItem (url) {
         url,
         {
             method: "DELETE",
-            headers: {"Content-Type": "application/json"}
+            headers: {"Content-Type": "application/json","Authorization":"Bearer " + accessToken}
         }
     ).then(response => {
         if (!response.ok) {

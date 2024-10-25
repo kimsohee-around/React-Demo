@@ -2,7 +2,7 @@ import {Link} from "react-router-dom";
 import {signin} from "./utils/api-auth.js";
 import {useEffect, useRef, useState} from "react";
 
-export default function Login ({auth}) {
+export default function Login () {
     const [error,setError] =useState("")
     const usernameRef = useRef()
     const passwordRef = useRef()
@@ -23,7 +23,7 @@ export default function Login ({auth}) {
 
     };
 
-    return auth || (
+    return  (
         <div className="booking-details" style={{width: "300px", margin: "auto"}}>
             <div style={{textAlign: "center", marginTop: "10%"}}>
                 <img src="/react.svg" alt="react logo" width="50"/>

@@ -81,12 +81,13 @@ function App() {
     const username = localStorage.getItem("USERNAME")
 
     useEffect(() => {
-
-         call(`/auth/init/${username}`,"GET",null)
-             .then(data => {
-                 setAuth(data)
-                 console.log('auth',auth)
-             })
+        if(username) {
+            call(`/auth`, "GET", null)
+                .then(data => {
+                    setAuth(data)
+                    console.log('auth', auth)
+                })
+        }
     }, [username]);
 
  return (
@@ -114,6 +115,7 @@ function App() {
 
                         {auth ? (
                         <Routes>
+                            <Route path="/bookables/*" element={<BookablePage auth={auth}/>}/>
                             <Route path="/" element={<BookablePage auth={auth}/>}/>
                             <Route path="/bookings" element={<BookingsPage/>}/>
                             <Route path="/users" element={<UsersPage/>}/>
@@ -122,8 +124,8 @@ function App() {
                             (
                             <Routes>
                             <Route path="/bookables/*" element={<BookablePage auth={auth}/>}/>
-                             <Route path="/signin" element={<Login/>}/>
-                             <Route path="/" element={<Login/>}/>
+                             <Route path="/signin" element={<Login />}/>
+                             <Route path="/" element={<Login />}/>
                              <Route path="/signup" element={<Register />}/>
                             </Routes>
                             )}
