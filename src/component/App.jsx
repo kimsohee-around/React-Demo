@@ -13,6 +13,7 @@ import {useEffect, useState} from "react";
 import Login from "./Login.jsx";
 import Register from "./Register.jsx";
 import {call, signout} from "./utils/api-auth.js";
+import PageSpinner from "./UI/PageSpinner.jsx";
 
 const queryClient = new QueryClient()
 const AuthUser = function() {
@@ -78,17 +79,25 @@ function handleLogout(){
 
 function App() {
     const [auth , setAuth] = useState(false)
-    const username = localStorage.getItem("USERNAME")
+    const temp = localStorage.getItem("USERNAME")
+    const [status,setStatus] = useState("success")
+    const [username,setUsername] = useState(temp)
 
     useEffect(() => {
         if(username) {
+            setStatus("loading")
             call(`/auth`, "GET", null)
                 .then(data => {
                     setAuth(data)
                     console.log('auth', auth)
+                    setStatus("success")
                 })
         }
     }, [username]);
+
+    if(status === "loading"){
+        return <PageSpinner/>
+    }
 
  return (
      <QueryClientProvider client={queryClient}>

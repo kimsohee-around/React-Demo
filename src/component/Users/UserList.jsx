@@ -5,16 +5,17 @@ import useFetch from "../utils/useFetch.js";
 import {useQuery, useQueryClient} from "react-query";
 import loadData from "../utils/api.js";
 import {useSearchParams} from "react-router-dom";
+import {API_BASE_URL} from "../utils/api-config.js";
 
 // 형제 컴포넌트 UserDetails 와 공유해야 합니다.
 function UserList (){
     //user 상태값을 UserContext 에서 가져옵니다.
     const {user, setUser} = useContext(UserContext)
 // "http://localhost:3001/users"
-
+    const url =API_BASE_URL + "/users"
     const {data:users=[],status,error} = useQuery(
         "users",
-        ()=> loadData("http://localhost:8080/users")
+        ()=> loadData(url)
     )
 
     useEffect(() => {

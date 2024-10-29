@@ -1,6 +1,7 @@
 import {useContext, useEffect} from "react";
 import UserContext from "./UserContext.jsx";
 import {useQueryClient} from "react-query";
+import {API_BASE_URL} from "../utils/api-config.js";
 
 export default function UserDetails () {
 
@@ -26,7 +27,7 @@ export default function UserDetails () {
             <div className="user-avatar">
              {/*   <img src={`http://localhost:5173/img/${user.img}`}
                      alt={user.name}/> */}
-                <img src={`http://localhost:8080/upload/${user.img}`}
+                <img src={`${API_BASE_URL}/upload/${user.img}`}
                      alt={user.name}/>
             </div>
             <div className="user-details">

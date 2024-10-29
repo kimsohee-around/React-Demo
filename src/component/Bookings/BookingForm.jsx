@@ -47,7 +47,7 @@ export default function BookingForm ({booking, bookable, onSave, onDelete}) {
               name="notes"
               rows={6}
               cols={30}
-              value={state.notes}
+              value={state?.notes}
               onChange={handleChange}
           />
                 </p>

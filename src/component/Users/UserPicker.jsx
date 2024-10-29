@@ -4,6 +4,7 @@ import UserContext from "./UserContext.jsx";
 import useFetch from "../utils/useFetch.js";
 import {useQuery} from "react-query";
 import loadData from "../utils/api.js";
+import {API_BASE_URL} from "../utils/api-config.js";
 
 export default function UserPicker(){
     // const [user, setUser] = useState(null)
@@ -11,10 +12,10 @@ export default function UserPicker(){
     // user 상태값을 가져오기 위해 useContext 훅을 사용해야 합니다.
     const {user, setUser} = useContext(UserContext)
    // "http://localhost:3001/users"  , setUser(data[0])   //순서1) 초기값 0번으로 설정
-
+    const url = API_BASE_URL + "/users"
     const {data:users=[],status,error} = useQuery(
         "users",
-        ()=> loadData("http://localhost:8080/users")
+        ()=> loadData(url)
     )
     console.log('status',status)
 

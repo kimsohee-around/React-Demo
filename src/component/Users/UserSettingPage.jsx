@@ -4,6 +4,7 @@ import UserContext from "./UserContext.jsx";
 import {useContext, useEffect, useState} from "react";
 import {useMutation, useQueryClient} from "react-query";
 import {editItem} from "../utils/api.js";
+import {API_BASE_URL} from "../utils/api-config.js"
 
 export default function UserSettingPage(){
     const navigate = useNavigate()
@@ -18,7 +19,8 @@ export default function UserSettingPage(){
     useEffect(() => {
         if(user){
             // 이미지 초기값 설정
-            setProfileImage(`http://localhost:8080/upload/${user.img}`)
+            // setProfileImage(`http://localhost:8080/upload/${user.img}`)
+            setProfileImage(`${API_BASE_URL}/upload/${user?.img}`)
             setState(user)
             setMessage(null)
         }
@@ -40,14 +42,16 @@ export default function UserSettingPage(){
     // 파일 선택을 하면 profileImage 상태값 변경하기
     function handleFileChange(e){
         const file = e.target.files[0]
+        console.log("selected file",file)
         if(file && file.type.startsWith('image/')){
+            setSelectedFile(file)       // 실제로 파일 업로드를 위한 state
             // img 태그의 src 를 변경. src는 URL
             // 선택한 파일객체에 대해 URL 을 생성해 줍니다.(파일업로드 아니고 미리보기)
             const imageUrl = URL.createObjectURL(file)
             setProfileImage(imageUrl)
             setState({...state, img:file.name})   //사용자 정보 변경을 위해 파일명 업데이트
             //
-            setSelectedFile(file)       // 실제로 파일 업로드를 위한 state
+             console.log("selected file",selectedFile)
         }else{
             alert('이미지 파일만 선택할 수 있습니다.')
             setSelectedFile(null)
@@ -55,20 +59,21 @@ export default function UserSettingPage(){
     }
 
     async function onSave(item){
-        updateUser(item)
-        executeFileUpload()
-        await setUser(item)
+        await executeFileUpload()
+        await updateUser(item)
+        setUser(item)
     }
 
     // 지금은 데이터 전송을 json-server 로 하는데 이것은 파일업로드를 처리할 수 없으므로 각각 테스트 합니다.
 // 프로젝트에서는 booking, bookable, user 모두 스프링부트에서 서버를 구현하고, updateUser 에서 다른 값과 함께 formData 를 전송하도록
 // 구현해야 합니다. useUpdateUser mutation 함수가 editItem 이 아니라 executeFileUpload 함수가 되어야 합니다.
     function executeFileUpload () {
+        console.log("executeFileUpload",selectedFile)
         if (!selectedFile) {    // selectedFile은 input type="file" 요소 객체
             return;
         }
         let headers = new Headers({
-            "Content-Type": "application/json",
+            // "Content-Type": "application/json",
         })
 
         const accessToken = localStorage.getItem("ACCESS_TOKEN")
@@ -79,8 +84,8 @@ export default function UserSettingPage(){
         const formData = new FormData();
         formData.append("file", selectedFile);
         // 텍스트 input 이 있으면 formData.append 로 값을 저장합니다.
-
-        fetch("http://localhost:8080/profile",{
+        const url = `${API_BASE_URL}/profile`
+        fetch(url,{
             headers: headers,
             method: "POST",
             body: formData     // body 가 json 이 아니고 formData
@@ -88,9 +93,14 @@ export default function UserSettingPage(){
             response => {
                 if(response.ok)
                     return response.json()
+                else
+                    throw new Error("파일 업로드 오류.")
             }
         ).then(
-            data => setMessage(data.message)
+            data => {
+                setMessage(data.message)
+            }
+
         ).catch(error=>{
             console.log(error)
         })
@@ -110,7 +120,7 @@ export default function UserSettingPage(){
                         📸
                     </div>
                     <input type="file" id="fileInput" style={{display: 'none'}} accept="image/*"
-                           onChange={handleFileChange}/>
+                           onChange={handleFileChange} />
                 </div>
                 <label>Name</label>
                 <p>
@@ -167,7 +177,7 @@ export default function UserSettingPage(){
 function useUpdateUser (key) {
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        item => editItem(`http://localhost:8080/users/${item.id}`, item),
+        item => editItem(`${API_BASE_URL}/users/${item.id}`, item),
         {
             onSuccess: (user) => {
                 queryClient.invalidateQueries(key);

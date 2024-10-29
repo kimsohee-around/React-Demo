@@ -4,7 +4,9 @@ import loadData, {editItem,deleteItem} from "../utils/api.js";
 import {useEffect, useState} from "react";
 import BookableForm from "./BookableForm.jsx";
 import PageSpinner from "../UI/PageSpinner.jsx";
+import {API_BASE_URL} from "../utils/api-config.js";
 
+const url = API_BASE_URL + "/bookables"
 // 수정(편집) 화면에는 현재 데이터 값(예약자원) 을 전달
 export default function BookableEdit(){
     const {id} = useParams()
@@ -13,7 +15,7 @@ export default function BookableEdit(){
     // 하나의 예약 자원을 fetch 합니다. -> key 값이 문자열,id 정수값 요소를 갖는 배열
     const {data, status,isLoading} = useQuery(
         ["bookable",id],
-        () => loadData(`http://localhost:8080/bookables/${id}`),
+        () => loadData(`${url}/${id}`),
         {
             initialData:
             queryClient.getQueriesData("bookables")?.find(
@@ -40,7 +42,7 @@ export default function BookableEdit(){
 
     // url 변경하는 네비게이트 함수를 리턴받는다.
     function handleSubmit(){
-        const result = editItem(`http://localhost:8080/bookables/${id}`,state)
+        const result = editItem(`${url}/${id}`,state)
         navigate(`/bookables/${id}`)
     }
 
@@ -68,7 +70,7 @@ function useDeleteBookable () {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        bookable => deleteItem(`http://localhost:8080/bookables/${bookable.id}`),
+        bookable => deleteItem(`${url}/${bookable.id}`),
         {
             // onSuccess : 첫번째 인자는 서버에서 보낸 응답. 두번째 인자는 실행함수로 보낸 데이터
             onSuccess: (response, bookable) => {

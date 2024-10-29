@@ -1,5 +1,6 @@
 import {signup} from "./utils/api-auth.js";
 import {useEffect, useRef, useState} from "react";
+import {API_BASE_URL} from "./utils/api-config.js";
 
 export default function Register () {
     const [check,setCheck] =useState("")
@@ -11,7 +12,7 @@ export default function Register () {
     useEffect(() => {
 
         if(exec) {
-            fetch(`http://localhost:8080/checkout/${username}`)
+            fetch(`${API_BASE_URL}/checkout/${username}`)
                 .then((response) => {
                     return response.json()
                 })
@@ -61,8 +62,7 @@ export default function Register () {
             setMColor("red")
             setCheck("이메일 형식이 아닙니다.")
 
-        } else  setExec(username)
-
+        } else setExec(username)
     }
 
     return (
@@ -76,8 +76,8 @@ export default function Register () {
                             required
                             type="text"
                             name="username"
-                            autoComplete="username"
                             value={username}
+                            autoComplete="off"
                             onChange={handleChange}
                             // defaultValue=""
                         />

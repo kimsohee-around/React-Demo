@@ -1,4 +1,5 @@
 import {formatDate} from "./date-utils.js";
+import {API_BASE_URL} from "./api-config.js";
 
 let headers = new Headers({
     "Content-Type": "application/json",
@@ -8,7 +9,7 @@ const accessToken = localStorage.getItem("ACCESS_TOKEN")
 if(accessToken){
     headers.append("Authorization","Bearer " + accessToken);
 }
-
+//  const url = API_BASE_URL + api;
 export default function loadData(url){
     let options ={
         headers: headers,
@@ -27,7 +28,8 @@ export default function loadData(url){
 export function getBookings(bookableId, startDate, endDate){
     const start = formatDate(startDate)
     const end = formatDate(endDate)
-    const urlRoot = "http://localhost:8080/bookings";
+    const urlRoot = API_BASE_URL + "/bookings";
+    // const urlRoot = "http://localhost:8080/bookings";
 
     const query = `bookableId=${bookableId}&start=${start}&end=${end}`
     return loadData(`${urlRoot}?&${query}`)

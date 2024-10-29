@@ -4,14 +4,15 @@ import PageSpinner from "../UI/PageSpinner.jsx";
 import Bookings from "./Bookings.jsx";
 import {useQuery} from "react-query";
 import loadData from "../utils/api.js";
+import {API_BASE_URL} from "../utils/api-config.js";
 
 export default function BookingsPage () {
 
     // const [bookable, setBookable] = useState(null);
-
+    const url = API_BASE_URL + "/bookables"
     const {data: bookables = [], status, error} = useQuery(
         "bookables",
-        () => loadData("http://localhost:8080/bookables")
+        () => loadData(url)
     );
 
     const [searchParam] = useSearchParams()

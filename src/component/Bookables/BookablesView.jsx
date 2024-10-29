@@ -6,6 +6,7 @@ import { FaPlus } from "react-icons/fa";
 import PageSpinner from "../UI/PageSpinner.jsx";
 import {useQuery} from "react-query";
 import loadData from "../utils/api.js";
+import {API_BASE_URL} from "../utils/api-config.js";
 
 export default function BookablesView ({auth}) {
 
@@ -13,7 +14,7 @@ export default function BookablesView ({auth}) {
     // status,error 추가적인 실행 상태 정보도 전달. => 카톡 그림 참고
     const {data: bookables = [], status, error} = useQuery(
         "bookables",
-        ()=> loadData("http://localhost:8080/bookables")
+        ()=> loadData(API_BASE_URL +"/bookables")
     );
     //첫번째 인자는 브라우저에 저장된 cache 를 가져오기 key (문자열,배열,객체) 직렬화 가능한 타입
     //두번째 인자는 비동기 함수
@@ -39,23 +40,23 @@ export default function BookablesView ({auth}) {
     
     return (
         <main className="bookables-page">
-        <div>
-            <BookablesList
-                bookable={bookable}
-                bookables={bookables}
-                getUrl={id => `/bookables/${id}`}
-            />
+            <div>
+                <BookablesList
+                    bookable={bookable}
+                    bookables={bookables}
+                    getUrl={id => `/bookables/${id}`}
+                />
 
-            {auth ? <p className="controls">
-                <Link
-                    to="/bookables/new"
-                    replace={true}
-                    className="btn">
-                    <FaPlus/>
-                    <span>New</span>
-                </Link>
-            </p> : <spinner />}
-        </div>
+                {auth && <p className="controls">
+                    <Link
+                        to="/bookables/new"
+                        replace={true}
+                        className="btn">
+                        <FaPlus/>
+                        <span>New</span>
+                    </Link>
+                </p> }
+            </div>
 
         <BookableDetails bookable={bookable} auth={auth}/>
     </main>

@@ -3,19 +3,21 @@ import {useMutation, useQuery, useQueryClient} from "react-query";
 import {getGrid, transformBookings} from "./grid-builder.js";
 import loadData, {createItem, deleteItem, editItem} from "../utils/api.js";
 import {useMemo} from "react";
+import {API_BASE_URL} from "../utils/api-config.js";
 
+const url = API_BASE_URL + "/bookings"
 export function useBookings(bookableId, startDate, endDate) {
     const start = formatDate(startDate);
     const end = formatDate(endDate);
 
-    const urlRoot = "http://localhost:8080/bookings";
+    // const urlRoot = "http://localhost:8080/bookings";
 
     const queryString = `bookableId=${bookableId}` +
         `&date_gte=${start}&date_lte=${end}`;
 
     const query = useQuery(
         ["bookings", bookableId, start, end],
-        () => loadData(`${urlRoot}?${queryString}`)
+        () => loadData(`${url}?${queryString}`)
     );
     console.log("-******-",query.data)
     return {
@@ -34,7 +36,7 @@ export function useGrid (bookable, startDate) {
 export function useCreateBooking (key) {
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        item => createItem("http://localhost:8080/bookings", item),
+        item => createItem(url, item),
         {
             onSuccess: (booking) => {
                 queryClient.invalidateQueries(key);
@@ -53,7 +55,7 @@ export function useCreateBooking (key) {
 export function useUpdateBooking (key) {
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        item => editItem(`http://localhost:8080/bookings/${item.id}`, item),
+        item => editItem(`${url}/${item.id}`, item),
         {
             onSuccess: (booking) => {
                 queryClient.invalidateQueries(key);
@@ -74,7 +76,7 @@ export function useUpdateBooking (key) {
 export function useDeleteBooking (key) {
     const queryClient = useQueryClient();
     const mutation = useMutation(
-        id => deleteItem(`http://localhost:8080/bookings/${id}`),
+        id => deleteItem(`${url}/${id}`),
         {
             onSuccess: (resp, id) => {
                 queryClient.invalidateQueries(key);
