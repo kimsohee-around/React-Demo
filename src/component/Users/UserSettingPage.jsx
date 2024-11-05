@@ -12,7 +12,7 @@ export default function UserSettingPage(){
     const {user,setUser} = useContext(UserContext)
     const [state, setState] = useState({})
     const [profileImage,setProfileImage] = useState()
-    const [selectedFile, setSelectedFile] = useState()
+    const [selectedFile, setSelectedFile] = useState(null)
     const [message,setMessage] = useState()
     const {title="",name="",notes=""} = state
 
@@ -59,15 +59,15 @@ export default function UserSettingPage(){
     }
 
     async function onSave(item){
-        await executeFileUpload()
+        if (selectedFile) await executeFileUpload()
         await updateUser(item)
-        setUser(item)
+        await setUser(item)
     }
 
     // 지금은 데이터 전송을 json-server 로 하는데 이것은 파일업로드를 처리할 수 없으므로 각각 테스트 합니다.
 // 프로젝트에서는 booking, bookable, user 모두 스프링부트에서 서버를 구현하고, updateUser 에서 다른 값과 함께 formData 를 전송하도록
 // 구현해야 합니다. useUpdateUser mutation 함수가 editItem 이 아니라 executeFileUpload 함수가 되어야 합니다.
-    function executeFileUpload () {
+    async function executeFileUpload () {
         console.log("executeFileUpload",selectedFile)
         if (!selectedFile) {    // selectedFile은 input type="file" 요소 객체
             return;
@@ -85,7 +85,7 @@ export default function UserSettingPage(){
         formData.append("file", selectedFile);
         // 텍스트 input 이 있으면 formData.append 로 값을 저장합니다.
         const url = `${API_BASE_URL}/profile`
-        fetch(url,{
+        await fetch(url,{
             headers: headers,
             method: "POST",
             body: formData     // body 가 json 이 아니고 formData

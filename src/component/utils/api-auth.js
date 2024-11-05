@@ -60,6 +60,6 @@ export function signout(){
 export function signup(userDTO){
     return call("/signup","POST",userDTO)
         .then((response)=>{
-            window.location.href="/signin"
+            window.location.href="/"
         });
 }
