@@ -28,7 +28,7 @@ function Person() {
 const p = new Person();
 
 /*function People() {
-    this.age = 0;
+    this.age = 0;     // age=0 도 가능함
 
     setInterval(() => {
         this.age++; // 화살표 함수는 상위 스코프의 this를 참조함
